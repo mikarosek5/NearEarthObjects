@@ -39,11 +39,10 @@ class PictureOfDayFragment : ScopedFragment(), KodeinAware {
     private fun bindUi() = launch {
         val daily = viewModel.daily.await()
         daily.observe(this@PictureOfDayFragment, Observer {
-
             if (it == null)
                 return@Observer
-
             Toast.makeText(this@PictureOfDayFragment.context, "aaaaaaaa", Toast.LENGTH_SHORT).show()
+            textView.text = it.toString()
         })
     }
 

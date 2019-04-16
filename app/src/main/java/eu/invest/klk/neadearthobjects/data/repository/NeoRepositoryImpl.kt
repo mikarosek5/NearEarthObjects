@@ -35,7 +35,7 @@ class NeoRepositoryImpl(
     }
 
     private suspend fun initDailyData() {
-        if (isFetchDailyNeded(ZonedDateTime.now().minusHours(4)))
+        if (isFetchDailyNeded(ZonedDateTime.now().minusHours(4))) //Todo
             fetchDaily()
     }
 
