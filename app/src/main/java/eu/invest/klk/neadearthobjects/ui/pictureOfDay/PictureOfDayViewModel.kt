@@ -1,7 +1,10 @@
 package eu.invest.klk.neadearthobjects.ui.pictureOfDay
 
 import androidx.lifecycle.ViewModel;
+import eu.invest.klk.neadearthobjects.data.repository.NeoRepository
+import eu.invest.klk.neadearthobjects.internal.lazyDeferred
 
-class PictureOfDayViewModel : ViewModel() {
+class PictureOfDayViewModel(private val neoRepository: NeoRepository) : ViewModel() {
     // TODO: Implement the ViewModel
+    val daily by lazyDeferred { neoRepository.getDailyInfo() }
 }

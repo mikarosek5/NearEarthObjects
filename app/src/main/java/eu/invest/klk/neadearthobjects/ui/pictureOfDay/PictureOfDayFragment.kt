@@ -1,24 +1,25 @@
 package eu.invest.klk.neadearthobjects.ui.pictureOfDay
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
-
+import androidx.lifecycle.ViewModelProviders
 import eu.invest.klk.neadearthobjects.R
-import eu.invest.klk.neadearthobjects.data.network.ConnectivityInterceptorImpl
-import eu.invest.klk.neadearthobjects.data.network.NasaNetWorkDataSourceImpl
-import eu.invest.klk.neadearthobjects.data.network.NasaService
+import eu.invest.klk.neadearthobjects.ui.base.ScopedFragment
 import kotlinx.android.synthetic.main.picture_of_day_fragment.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.closestKodein
+import org.kodein.di.generic.instance
 
-class PictureOfDayFragment : Fragment() {
+class PictureOfDayFragment : ScopedFragment(), KodeinAware {
 
+    override val kodein: Kodein by closestKodein()
+    private val viewModelFactory: PictureOfDayViewModelFactory by instance()
 
     private lateinit var viewModel: PictureOfDayViewModel
 
@@ -31,15 +32,19 @@ class PictureOfDayFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(PictureOfDayViewModel::class.java)
-        // TODO: Use the ViewModel
-        val abc =  NasaNetWorkDataSourceImpl(NasaService(ConnectivityInterceptorImpl(this@PictureOfDayFragment.context!!)))
-        abc.downloadedDaily.observe(this, Observer {
-            textView.text = it.toString()
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(PictureOfDayViewModel::class.java)
+        bindUi()
+    }
+
+    private fun bindUi() = launch {
+        val daily = viewModel.daily.await()
+        daily.observe(this@PictureOfDayFragment, Observer {
+
+            if (it == null)
+                return@Observer
+
+            Toast.makeText(this@PictureOfDayFragment.context, "aaaaaaaa", Toast.LENGTH_SHORT).show()
         })
-        GlobalScope.launch(Dispatchers.Main) {
-            abc.fetchDaily()
-        }
     }
 
 }

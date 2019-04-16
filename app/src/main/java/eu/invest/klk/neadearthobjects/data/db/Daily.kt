@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 const val DAILY_ID = 0
 
-@Entity(tableName = "daily_my")
+@Entity(tableName = "daily")
 data class Daily(
     @SerializedName("explanation")
     val explanation: String,

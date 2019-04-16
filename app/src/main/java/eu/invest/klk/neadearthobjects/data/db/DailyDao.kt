@@ -11,6 +11,6 @@ interface DailyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun upsert(daily: Daily)
 
-    @Query("select * from daily_my where id = $DAILY_ID")
+    @Query("select * from daily where id = $DAILY_ID")
     fun getDaily():LiveData<Daily>
 }
