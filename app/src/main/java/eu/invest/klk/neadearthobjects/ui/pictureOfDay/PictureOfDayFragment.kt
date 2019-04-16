@@ -4,10 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import eu.invest.klk.neadearthobjects.R
+import eu.invest.klk.neadearthobjects.internal.GlideApp
 import eu.invest.klk.neadearthobjects.ui.base.ScopedFragment
 import kotlinx.android.synthetic.main.picture_of_day_fragment.*
 import kotlinx.coroutines.launch
@@ -41,8 +42,12 @@ class PictureOfDayFragment : ScopedFragment(), KodeinAware {
         daily.observe(this@PictureOfDayFragment, Observer {
             if (it == null)
                 return@Observer
-            Toast.makeText(this@PictureOfDayFragment.context, "aaaaaaaa", Toast.LENGTH_SHORT).show()
-            textView.text = it.toString()
+            group_loading.visibility = View.GONE
+            (activity as? AppCompatActivity)?.supportActionBar?.title = it.title
+            description.text = it.explanation
+            GlideApp.with(this@PictureOfDayFragment).load(it.url).into(imageView)
+
+//            description.text = it.toString()
         })
     }
 
