@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:title="Today image" android:id="@+id/pictureOfDayFragment" android:icon="@drawable/ic_earth"/>
+<item android:title="Near earth objects" android:id="@+id/neoListFragment" android:icon="@drawable/ic_telescope"/>
+<item android:title="Space X" android:id="@+id/spaceXListFragment" android:icon="@drawable/ic_rocket"/>
+</menu>
