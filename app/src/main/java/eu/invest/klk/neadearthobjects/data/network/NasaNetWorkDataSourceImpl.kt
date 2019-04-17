@@ -3,7 +3,7 @@ package eu.invest.klk.neadearthobjects.data.network
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import eu.invest.klk.neadearthobjects.data.db.Daily
+import eu.invest.klk.neadearthobjects.data.db.entity.Daily
 import eu.invest.klk.neadearthobjects.internal.ConnectivityException
 
 class NasaNetWorkDataSourceImpl(private val nasaService:NasaService) : NasaNetWorkDataSource {

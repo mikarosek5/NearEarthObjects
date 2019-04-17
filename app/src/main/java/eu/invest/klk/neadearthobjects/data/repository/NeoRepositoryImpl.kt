@@ -1,8 +1,7 @@
 package eu.invest.klk.neadearthobjects.data.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import eu.invest.klk.neadearthobjects.data.db.Daily
+import eu.invest.klk.neadearthobjects.data.db.entity.Daily
 import eu.invest.klk.neadearthobjects.data.db.DailyDao
 import eu.invest.klk.neadearthobjects.data.network.NasaNetWorkDataSource
 import kotlinx.coroutines.Dispatchers

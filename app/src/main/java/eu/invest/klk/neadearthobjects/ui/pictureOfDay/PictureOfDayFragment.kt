@@ -1,5 +1,6 @@
 package eu.invest.klk.neadearthobjects.ui.pictureOfDay
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,12 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import eu.invest.klk.neadearthobjects.R
 import eu.invest.klk.neadearthobjects.internal.GlideApp
 import eu.invest.klk.neadearthobjects.ui.base.ScopedFragment
@@ -37,18 +44,50 @@ class PictureOfDayFragment : ScopedFragment(), KodeinAware {
         bindUi()
     }
 
+
+
     private fun bindUi() = launch {
         val daily = viewModel.daily.await()
         daily.observe(this@PictureOfDayFragment, Observer {
             if (it == null)
                 return@Observer
-            group_loading.visibility = View.GONE
+//            group_loading.visibility = View.GONE
             (activity as? AppCompatActivity)?.supportActionBar?.title = it.title
             description.text = it.explanation
-            GlideApp.with(this@PictureOfDayFragment).load(it.url).into(imageView)
-
-//            description.text = it.toString()
+            loadImage(it.url)
         })
     }
+    private fun loadImage (url:String){
+        GlideApp.with(this@PictureOfDayFragment).load(url).apply {
+            transition(DrawableTransitionOptions.withCrossFade())
+            listener(object :RequestListener<Drawable>{
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    group_loading.visibility = View.GONE
+                    cardView.animate().alpha(1f).duration=2
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    group_loading.visibility = View.GONE
+                    cardView.animate().alpha(1f).duration=2
+                    return false
+                }
+
+            })
+            into(imageView)
+        }
+    }
+
 
 }
