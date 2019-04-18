@@ -1,5 +1,6 @@
 package eu.invest.klk.neadearthobjects
 
+import eu.invest.klk.neadearthobjects.data.network.NasaService
 import org.junit.Test
 
 import org.junit.Assert.*

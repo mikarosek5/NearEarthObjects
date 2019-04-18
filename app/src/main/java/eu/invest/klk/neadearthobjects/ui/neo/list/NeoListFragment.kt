@@ -30,7 +30,6 @@ class NeoListFragment : ScopedFragment(),KodeinAware {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this,neoListViewModelFactory).get(NeoListViewModel::class.java)
         bindUi()
-        // TODO: Use the ViewModel
     }
 
     private fun bindUi() = launch {

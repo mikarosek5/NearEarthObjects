@@ -22,6 +22,7 @@ interface NasaService {
     @GET("neo/rest/v1/stats")
     fun neoCountAsync():Deferred<NeoCount>
 
+
     companion object {
         operator fun invoke(connectivityInterceptor: ConnectivityInterceptor): NasaService {
             val requestInterceptor = Interceptor {

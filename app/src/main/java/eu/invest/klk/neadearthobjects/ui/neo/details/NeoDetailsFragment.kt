@@ -11,9 +11,6 @@ import eu.invest.klk.neadearthobjects.R
 
 class NeoDetailsFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = NeoDetailsFragment()
-    }
 
     private lateinit var viewModel: NeoDetailsViewModel
 
