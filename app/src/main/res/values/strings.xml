@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Nead Earth Objects</string>
+    <string name="app_name">Near Earth Objects</string>
+    <string name="near_object_count"> %1$d near earth objects</string>
+    <string name="near_object_count_closest"> %1$d close approach count</string>
 </resources>

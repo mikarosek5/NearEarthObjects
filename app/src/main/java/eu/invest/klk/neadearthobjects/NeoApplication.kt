@@ -7,6 +7,7 @@ import eu.invest.klk.neadearthobjects.data.db.NeoDatabase
 import eu.invest.klk.neadearthobjects.data.network.*
 import eu.invest.klk.neadearthobjects.data.repository.NeoRepository
 import eu.invest.klk.neadearthobjects.data.repository.NeoRepositoryImpl
+import eu.invest.klk.neadearthobjects.ui.neo.list.NeoListViewModelFactory
 import eu.invest.klk.neadearthobjects.ui.pictureOfDay.PictureOfDayViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -22,11 +23,13 @@ class NeoApplication : Application(), KodeinAware {
 
         bind() from singleton { NeoDatabase(instance()) }
         bind() from singleton { instance<NeoDatabase>().dailyDao() }
+        bind() from singleton { instance<NeoDatabase>().neoCountDao() }
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { NasaService(instance()) }
         bind<NasaNetWorkDataSource>() with singleton { NasaNetWorkDataSourceImpl(instance()) }
-        bind<NeoRepository>() with singleton { NeoRepositoryImpl(instance(),instance()) }
+        bind<NeoRepository>() with singleton { NeoRepositoryImpl(instance(),instance(),instance()) }
         bind() from provider { PictureOfDayViewModelFactory(instance()) }
+        bind() from provider { NeoListViewModelFactory(instance()) }
     }
 
     override fun onCreate() {

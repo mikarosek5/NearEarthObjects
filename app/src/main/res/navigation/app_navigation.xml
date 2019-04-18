@@ -9,7 +9,7 @@
               android:label="Today" tools:layout="@layout/picture_of_day_fragment"/>
     <fragment android:id="@+id/neoListFragment"
               android:name="eu.invest.klk.neadearthobjects.ui.neo.list.NeoListFragment"
-              android:label="neo_list_fragment" tools:layout="@layout/neo_list_fragment"/>
+              tools:layout="@layout/neo_list_fragment"/>
     <fragment android:id="@+id/spaceXListFragment"
               android:name="eu.invest.klk.neadearthobjects.ui.spacex.launcheslist.SpaceXListFragment"
               android:label="space_xlist_fragment" tools:layout="@layout/space_xlist_fragment"/>

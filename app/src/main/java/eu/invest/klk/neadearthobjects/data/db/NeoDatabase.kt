@@ -5,15 +5,17 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import eu.invest.klk.neadearthobjects.data.db.entity.Daily
+import eu.invest.klk.neadearthobjects.data.db.entity.NeoCount
 
 
 @Database(
-    entities = [Daily::class],
+    entities = [Daily::class,NeoCount::class],
     version = 1,
     exportSchema = false //TODO("check this warning later")
 )
 abstract class NeoDatabase:RoomDatabase() {
     abstract fun dailyDao():DailyDao
+    abstract fun neoCountDao():NeoCountDao
 
     companion object{
         @Volatile var instance: NeoDatabase? = null

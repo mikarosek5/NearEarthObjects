@@ -1,13 +1,13 @@
-package eu.invest.klk.neadearthobjects.ui.pictureOfDay
+package eu.invest.klk.neadearthobjects.ui.neo.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import eu.invest.klk.neadearthobjects.data.repository.NeoRepository
 
-class PictureOfDayViewModelFactory(private val neoRepository: NeoRepository):ViewModelProvider.NewInstanceFactory() {
+class NeoListViewModelFactory(private val neoRepository: NeoRepository): ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return PictureOfDayViewModel(neoRepository) as T
+        return NeoListViewModel(neoRepository) as T
     }
 }
