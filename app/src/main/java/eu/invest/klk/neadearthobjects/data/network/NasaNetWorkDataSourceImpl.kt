@@ -3,8 +3,9 @@ package eu.invest.klk.neadearthobjects.data.network
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import eu.invest.klk.neadearthobjects.data.db.entity.Daily
-import eu.invest.klk.neadearthobjects.data.db.entity.NeoCount
+import com.example.try_modular.neoResponse.NeoResponse
+import eu.invest.klk.neadearthobjects.data.db.entity.daily.Daily
+import eu.invest.klk.neadearthobjects.data.db.entity.neo.count.NeoCount
 import eu.invest.klk.neadearthobjects.internal.ConnectivityException
 
 class NasaNetWorkDataSourceImpl(private val nasaService:NasaService) : NasaNetWorkDataSource {
@@ -15,6 +16,11 @@ class NasaNetWorkDataSourceImpl(private val nasaService:NasaService) : NasaNetWo
     private val  _downloadedNeoCount = MutableLiveData<NeoCount>()
     override val downloadedNeoCount: LiveData<NeoCount>
         get() = _downloadedNeoCount
+
+    private val _downloadedNeoObjects = MutableLiveData<NeoResponse>()
+
+    override val downloadedNeoObjects: LiveData<NeoResponse>
+        get() = _downloadedNeoObjects
 
     override suspend fun fetchDaily() {
         try {
@@ -31,6 +37,15 @@ class NasaNetWorkDataSourceImpl(private val nasaService:NasaService) : NasaNetWo
         try {
             val fetchedNeoCount = nasaService.neoCountAsync().await()
             _downloadedNeoCount.postValue(fetchedNeoCount)
+        }catch (e:ConnectivityException){
+            Log.e("Connectivity","No internet connection.", e)
+        }
+    }
+
+    override suspend fun fetchNeoObjects(page:Int,size:Int) {
+        try {
+            val fetchedNeoResponse = nasaService.getNeoObjectsAsync(page,size).await()
+            _downloadedNeoObjects.postValue(fetchedNeoResponse)
         }catch (e:ConnectivityException){
             Log.e("Connectivity","No internet connection.", e)
         }

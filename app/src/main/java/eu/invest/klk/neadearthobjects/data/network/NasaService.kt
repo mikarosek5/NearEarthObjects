@@ -1,14 +1,16 @@
 package eu.invest.klk.neadearthobjects.data.network
 
+import com.example.try_modular.neoResponse.NeoResponse
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import eu.invest.klk.neadearthobjects.data.db.entity.Daily
-import eu.invest.klk.neadearthobjects.data.db.entity.NeoCount
+import eu.invest.klk.neadearthobjects.data.db.entity.daily.Daily
+import eu.invest.klk.neadearthobjects.data.db.entity.neo.count.NeoCount
 import kotlinx.coroutines.Deferred
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 //const val api_key = "DEMO_KEY"
 const val api_key = "NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo"
@@ -21,6 +23,9 @@ interface NasaService {
 
     @GET("neo/rest/v1/stats")
     fun neoCountAsync():Deferred<NeoCount>
+
+    @GET("neo/rest/v1/neo/browse")
+    fun getNeoObjectsAsync(@Query("page") page:Int,@Query("size") size:Int):Deferred<NeoResponse>
 
 
     companion object {

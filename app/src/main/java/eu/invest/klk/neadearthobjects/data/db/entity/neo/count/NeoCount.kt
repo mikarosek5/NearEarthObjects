@@ -1,4 +1,4 @@
-package eu.invest.klk.neadearthobjects.data.db.entity
+package eu.invest.klk.neadearthobjects.data.db.entity.neo.count
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

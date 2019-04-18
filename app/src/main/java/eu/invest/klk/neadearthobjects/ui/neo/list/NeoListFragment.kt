@@ -8,7 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import eu.invest.klk.neadearthobjects.R
+import eu.invest.klk.neadearthobjects.data.network.ConnectivityInterceptorImpl
+import eu.invest.klk.neadearthobjects.data.network.NasaService
 import eu.invest.klk.neadearthobjects.ui.base.ScopedFragment
+import kotlinx.android.synthetic.main.neo_list_fragment.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -30,9 +35,18 @@ class NeoListFragment : ScopedFragment(),KodeinAware {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this,neoListViewModelFactory).get(NeoListViewModel::class.java)
         bindUi()
+
+        launch(Dispatchers.Main) {
+            val nasaService = NasaService(ConnectivityInterceptorImpl(this@NeoListFragment.context!!))
+            textView.text = nasaService.getNeoObjectsAsync(1,1).await().toString()
+        }
     }
 
     private fun bindUi() = launch {
+        setUpToolbarText()
+    }
+
+    private suspend fun setUpToolbarText(){
         val neoObject = viewModel.neoCount.await()
         neoObject.observe(this@NeoListFragment, Observer {
             if (it==null)

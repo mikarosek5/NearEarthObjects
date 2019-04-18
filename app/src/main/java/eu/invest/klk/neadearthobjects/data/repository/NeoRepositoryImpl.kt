@@ -1,10 +1,11 @@
 package eu.invest.klk.neadearthobjects.data.repository
 
 import androidx.lifecycle.LiveData
-import eu.invest.klk.neadearthobjects.data.db.entity.Daily
+import eu.invest.klk.neadearthobjects.data.db.entity.daily.Daily
 import eu.invest.klk.neadearthobjects.data.db.DailyDao
 import eu.invest.klk.neadearthobjects.data.db.NeoCountDao
-import eu.invest.klk.neadearthobjects.data.db.entity.NeoCount
+import eu.invest.klk.neadearthobjects.data.db.NeoDao
+import eu.invest.klk.neadearthobjects.data.db.entity.neo.count.NeoCount
 import eu.invest.klk.neadearthobjects.data.network.NasaNetWorkDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -15,6 +16,7 @@ import org.threeten.bp.ZonedDateTime
 class NeoRepositoryImpl(
     private val dailyDao: DailyDao,
     private val neoCountDao: NeoCountDao,
+    private val neoDao: NeoDao,
     private val nasaNetWorkDataSource: NasaNetWorkDataSource
 ) : NeoRepository {
     init {
@@ -24,6 +26,7 @@ class NeoRepositoryImpl(
         nasaNetWorkDataSource.downloadedNeoCount.observeForever { newNeoCount ->
             persistFetchedNeoCount(newNeoCount)
         }
+        nasaNetWorkDataSource.downloadedNeoObjects.observeForever {  } //Todo(!!!!!!!!!!!!!!!!!!!!!!!!)
     }
 
     override suspend fun getDailyInfo(): LiveData<Daily> {
@@ -39,6 +42,7 @@ class NeoRepositoryImpl(
             return@withContext neoCountDao.getNeo()
         }
     }
+
 
     private fun persistFetchedDaily(fetchedDaily: Daily) {
         GlobalScope.launch(Dispatchers.IO) {

@@ -27,7 +27,7 @@ class NeoApplication : Application(), KodeinAware {
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { NasaService(instance()) }
         bind<NasaNetWorkDataSource>() with singleton { NasaNetWorkDataSourceImpl(instance()) }
-        bind<NeoRepository>() with singleton { NeoRepositoryImpl(instance(),instance(),instance()) }
+        bind<NeoRepository>() with singleton { NeoRepositoryImpl(instance(),instance(),instance(),instance()) }
         bind() from provider { PictureOfDayViewModelFactory(instance()) }
         bind() from provider { NeoListViewModelFactory(instance()) }
     }

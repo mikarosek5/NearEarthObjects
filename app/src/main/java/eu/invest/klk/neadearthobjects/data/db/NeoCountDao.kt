@@ -5,8 +5,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import eu.invest.klk.neadearthobjects.data.db.entity.NEOID
-import eu.invest.klk.neadearthobjects.data.db.entity.NeoCount
+import eu.invest.klk.neadearthobjects.data.db.entity.neo.count.NEOID
+import eu.invest.klk.neadearthobjects.data.db.entity.neo.count.NeoCount
 
 @Dao
 interface NeoCountDao {
