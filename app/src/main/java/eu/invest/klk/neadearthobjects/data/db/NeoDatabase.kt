@@ -4,13 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.try_modular.neoResponse.NearEarthObject
+import eu.invest.klk.neadearthobjects.data.db.entity.neo.list.NearEarthObject
 import eu.invest.klk.neadearthobjects.data.db.entity.daily.Daily
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.count.NeoCount
 
 
 @Database(
-    entities = [Daily::class, NeoCount::class,NearEarthObject::class],
+    entities = [Daily::class, NeoCount::class, NearEarthObject::class],
     version = 1,
     exportSchema = false //TODO("check this warning later")
 )

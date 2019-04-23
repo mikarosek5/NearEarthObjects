@@ -24,6 +24,7 @@ class NeoApplication : Application(), KodeinAware {
         bind() from singleton { NeoDatabase(instance()) }
         bind() from singleton { instance<NeoDatabase>().dailyDao() }
         bind() from singleton { instance<NeoDatabase>().neoCountDao() }
+        bind() from singleton { instance<NeoDatabase>().neoDao() }
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { NasaService(instance()) }
         bind<NasaNetWorkDataSource>() with singleton { NasaNetWorkDataSourceImpl(instance()) }

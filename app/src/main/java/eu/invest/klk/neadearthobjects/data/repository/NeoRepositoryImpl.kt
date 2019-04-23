@@ -1,6 +1,7 @@
 package eu.invest.klk.neadearthobjects.data.repository
 
 import androidx.lifecycle.LiveData
+import eu.invest.klk.neadearthobjects.data.db.entity.neo.list.NearEarthObject
 import eu.invest.klk.neadearthobjects.data.db.entity.daily.Daily
 import eu.invest.klk.neadearthobjects.data.db.DailyDao
 import eu.invest.klk.neadearthobjects.data.db.NeoCountDao
@@ -26,7 +27,9 @@ class NeoRepositoryImpl(
         nasaNetWorkDataSource.downloadedNeoCount.observeForever { newNeoCount ->
             persistFetchedNeoCount(newNeoCount)
         }
-        nasaNetWorkDataSource.downloadedNeoObjects.observeForever {  } //Todo(!!!!!!!!!!!!!!!!!!!!!!!!!)
+        nasaNetWorkDataSource.downloadedNeoObjects.observeForever {newNeoObjects ->
+            persistFetchedNeoObjects(newNeoObjects.nearEarthObjects)
+        }
     }
 
     override suspend fun getDailyInfo(): LiveData<Daily> {
@@ -43,6 +46,12 @@ class NeoRepositoryImpl(
         }
     }
 
+    override suspend fun getNeoObjectsList(page: Int, size: Int): LiveData<List<NearEarthObject>> {
+        return withContext(Dispatchers.IO) {
+            initNeoObjects(page = page,size = size)
+            return@withContext neoDao.getAllNeoObjects()
+        }
+    }
 
     private fun persistFetchedDaily(fetchedDaily: Daily) {
         GlobalScope.launch(Dispatchers.IO) {
@@ -55,6 +64,11 @@ class NeoRepositoryImpl(
             neoCountDao.upsert(fetchedNeoCount)
         }
     }
+    private fun persistFetchedNeoObjects(fetchedNeoObject: List<NearEarthObject>){
+        GlobalScope.launch(Dispatchers.IO) {
+            neoDao.upsert(fetchedNeoObject)
+        }
+    }
 
     private suspend fun initDailyData() {
         if (isFetchNeded(ZonedDateTime.now().minusHours(4))) //Todo
@@ -65,6 +79,10 @@ class NeoRepositoryImpl(
         if (isFetchNeded(ZonedDateTime.now().minusHours(4)))
             fetchNeoCount()
     }
+    private suspend fun initNeoObjects(page:Int,size:Int){
+        if (isFetchNeded(ZonedDateTime.now().minusHours(4)))
+            fetchNeoObjects(page = page,size = size)
+    }
 
 
     private suspend fun fetchDaily() {
@@ -74,6 +92,10 @@ class NeoRepositoryImpl(
 
     private suspend fun fetchNeoCount() {
         nasaNetWorkDataSource.fetchNeoCount()
+    }
+
+    private suspend fun fetchNeoObjects(page:Int,size:Int){
+        nasaNetWorkDataSource.fetchNeoObjects(page = page,size = size)
     }
 
     private fun isFetchNeded(lastFetchTime: ZonedDateTime): Boolean {

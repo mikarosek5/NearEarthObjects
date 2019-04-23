@@ -1,4 +1,4 @@
-package com.example.try_modular.neoResponse
+package eu.invest.klk.neadearthobjects.data.db.entity.neo.list
 
 import com.google.gson.annotations.SerializedName
 

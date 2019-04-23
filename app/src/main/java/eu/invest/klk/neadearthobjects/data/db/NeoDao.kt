@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.try_modular.neoResponse.NearEarthObject
+import eu.invest.klk.neadearthobjects.data.db.entity.neo.list.NearEarthObject
 
 @Dao
 interface NeoDao {

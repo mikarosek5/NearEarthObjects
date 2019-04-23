@@ -13,7 +13,8 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 //const val api_key = "DEMO_KEY"
-const val api_key = "NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo"
+//const val api_key = "NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo"
+const val api_key = "kdNMB1Kqp8Z58KhQQjY2Doqn5KKhUeYs7iZnsbXL"
 
 //NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo
 interface NasaService {

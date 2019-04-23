@@ -1,19 +1,21 @@
 package eu.invest.klk.neadearthobjects.ui.neo.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.ViewHolder
 import eu.invest.klk.neadearthobjects.R
-import eu.invest.klk.neadearthobjects.data.network.ConnectivityInterceptorImpl
-import eu.invest.klk.neadearthobjects.data.network.NasaService
+import eu.invest.klk.neadearthobjects.data.db.entity.neo.list.NearEarthObject
 import eu.invest.klk.neadearthobjects.ui.base.ScopedFragment
 import kotlinx.android.synthetic.main.neo_list_fragment.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -36,14 +38,29 @@ class NeoListFragment : ScopedFragment(),KodeinAware {
         viewModel = ViewModelProviders.of(this,neoListViewModelFactory).get(NeoListViewModel::class.java)
         bindUi()
 
-        launch(Dispatchers.Main) {
-            val nasaService = NasaService(ConnectivityInterceptorImpl(this@NeoListFragment.context!!))
-            textView.text = nasaService.getNeoObjectsAsync(1,1).await().toString()
-        }
     }
 
     private fun bindUi() = launch {
         setUpToolbarText()
+        setUpRecycler()
+    }
+
+    private suspend fun setUpRecycler(){
+        val neoObjectList = viewModel.getAllNeos(203,20).value.await()
+        neoObjectList.observe(this@NeoListFragment, Observer {
+            if (it==null)
+                return@Observer
+            Log.d("Objects",it.toString())
+
+            val groupAdaper = GroupAdapter<ViewHolder>().apply {
+                addAll(it.map { item-> NeoItem(item) })
+            }
+            recycler.apply {
+                layoutManager = LinearLayoutManager(this@NeoListFragment.context)
+                adapter = groupAdaper
+            }
+
+        })
     }
 
     private suspend fun setUpToolbarText(){
@@ -56,6 +73,7 @@ class NeoListFragment : ScopedFragment(),KodeinAware {
 
         })
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

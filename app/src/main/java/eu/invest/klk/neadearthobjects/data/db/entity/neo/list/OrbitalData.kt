@@ -1,5 +1,6 @@
-package com.example.try_modular.neoResponse
+package eu.invest.klk.neadearthobjects.data.db.entity.neo.list
 
+import androidx.room.Embedded
 import com.google.gson.annotations.SerializedName
 
 data class OrbitalData(
@@ -31,8 +32,6 @@ data class OrbitalData(
     val minimumOrbitIntersection: String,
     @SerializedName("observations_used")
     val observationsUsed: Int,
-    @SerializedName("orbit_class")
-    val orbitClass: OrbitClass,
     @SerializedName("orbit_determination_date")
     val orbitDeterminationDate: String,
     @SerializedName("orbit_id")
@@ -48,5 +47,8 @@ data class OrbitalData(
     @SerializedName("perihelion_time")
     val perihelionTime: String,
     @SerializedName("semi_major_axis")
-    val semiMajorAxis: String
+    val semiMajorAxis: String,
+    @SerializedName("orbit_class")
+    @Embedded(prefix = "orbit_class_")
+    val orbitClass: OrbitClass
 )

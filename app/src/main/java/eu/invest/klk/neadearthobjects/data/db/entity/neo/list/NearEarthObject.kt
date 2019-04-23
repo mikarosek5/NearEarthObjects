@@ -1,11 +1,16 @@
-package com.example.try_modular.neoResponse
+package eu.invest.klk.neadearthobjects.data.db.entity.neo.list
 
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import org.jetbrains.annotations.NotNull
+
 @Entity(tableName = "near_earth_objects")
 data class NearEarthObject(
+    @SerializedName("neo_reference_id")
+    @PrimaryKey(autoGenerate = false)
+    val neoReferenceId: String,
     @SerializedName("absolute_magnitude_h")
     val absoluteMagnitudeH: Double,
     @SerializedName("designation")
@@ -16,15 +21,8 @@ data class NearEarthObject(
     val isSentryObject: Boolean,
     @SerializedName("name")
     val name: String,
-    @SerializedName("name_limited")
-    val nameLimited: String,
     @SerializedName("nasa_jpl_url")
     val nasaJplUrl: String,
-    @SerializedName("neo_reference_id")
-    @PrimaryKey(autoGenerate = false)
-    val neoReferenceId: String,
-    @SerializedName("sentry_data")
-    val sentryData: String,
     @SerializedName("estimated_diameter")
     @Embedded(prefix = "estimated_diameter_")
     val estimatedDiameter: EstimatedDiameter,
