@@ -7,6 +7,7 @@ import eu.invest.klk.neadearthobjects.data.db.entity.neo.count.NeoCount
 import kotlinx.coroutines.Deferred
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -31,6 +32,8 @@ interface NasaService {
 
     companion object {
         operator fun invoke(connectivityInterceptor: ConnectivityInterceptor): NasaService {
+            val logger = HttpLoggingInterceptor()
+            logger.level = HttpLoggingInterceptor.Level.BODY
             val requestInterceptor = Interceptor {
                 val url = it.request()
                     .url()
@@ -45,6 +48,7 @@ interface NasaService {
             }
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(requestInterceptor)
+                .addInterceptor(logger)
                 .addInterceptor(connectivityInterceptor)
                 .build()
             return Retrofit.Builder()

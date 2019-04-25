@@ -10,6 +10,10 @@ apply plugin: 'androidx.navigation.safeargs'
 
 android {
     compileSdkVersion 28
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
     defaultConfig {
         applicationId "eu.invest.klk.neadearthobjects"
         minSdkVersion 24
@@ -64,6 +68,8 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
+    //Ok http logger
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.14.0'
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
@@ -90,4 +96,9 @@ dependencies {
 
     // New Material Design
     implementation "com.google.android.material:material:1.0.0"
+
+    //Paging Lib
+    implementation "androidx.paging:paging-runtime:$pagingVersion"
+
+
 }

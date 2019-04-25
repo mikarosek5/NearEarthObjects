@@ -1,6 +1,8 @@
 package eu.invest.klk.neadearthobjects.data.repository
 
 import androidx.lifecycle.LiveData
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.list.NearEarthObject
 import eu.invest.klk.neadearthobjects.data.db.entity.daily.Daily
 import eu.invest.klk.neadearthobjects.data.db.DailyDao
@@ -50,6 +52,19 @@ class NeoRepositoryImpl(
         return withContext(Dispatchers.IO) {
             initNeoObjects(page = page,size = size)
             return@withContext neoDao.getAllNeoObjects()
+        }
+    }
+
+    override suspend fun getNeoObjectsListPaged(page: Int, size: Int): LiveData<PagedList<NearEarthObject>> {
+        return withContext(Dispatchers.IO) {
+            initNeoObjects(page = page,size = size)
+            val pagedListConfig = PagedList.Config.Builder()
+                .setEnablePlaceholders(false)
+                .setPageSize(10)
+                .setPrefetchDistance(10)
+                .setInitialLoadSizeHint(30)
+                .build()
+            return@withContext LivePagedListBuilder<Int,NearEarthObject>(neoDao.getAllNeoObjectsPaged(),pagedListConfig).build()
         }
     }
 

@@ -1,6 +1,7 @@
 package eu.invest.klk.neadearthobjects.data.db
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -15,5 +16,9 @@ interface NeoDao {
 
     @Query("select * from near_earth_objects")
     fun getAllNeoObjects():LiveData<List<NearEarthObject>>
+
+    @Query("select * from near_earth_objects")
+    fun getAllNeoObjectsPaged(): DataSource.Factory<Int, NearEarthObject>
+
 
 }

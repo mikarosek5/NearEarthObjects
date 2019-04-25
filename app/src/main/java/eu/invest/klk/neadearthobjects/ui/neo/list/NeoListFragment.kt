@@ -5,16 +5,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import eu.invest.klk.neadearthobjects.R
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.list.NearEarthObject
 import eu.invest.klk.neadearthobjects.ui.base.ScopedFragment
+import eu.invest.klk.neadearthobjects.ui.helpers.EndlessScrollListener
 import kotlinx.android.synthetic.main.neo_list_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
@@ -56,12 +59,20 @@ class NeoListFragment : ScopedFragment(),KodeinAware {
                 addAll(it.map { item-> NeoItem(item) })
             }
             recycler.apply {
-                layoutManager = LinearLayoutManager(this@NeoListFragment.context)
+                layoutManager = LinearLayoutManager(this@NeoListFragment.context).also {layoutManager->
+                    addOnScrollListener(EndlessScrollListener(layoutManager,loadNewDataListener))
+                }
                 adapter = groupAdaper
             }
 
         })
     }
+    private val loadNewDataListener:()->Unit = {
+//        Toast.makeText(this.context,"Dziala",Toast.LENGTH_SHORT).show()
+        Log.d(this::class.java.simpleName,"koniec")
+    }
+
+
 
     private suspend fun setUpToolbarText(){
         val neoObject = viewModel.neoCount.await()
