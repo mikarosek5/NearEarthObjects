@@ -2,7 +2,6 @@ package eu.invest.klk.neadearthobjects
 
 import android.app.Application
 import com.jakewharton.threetenabp.AndroidThreeTen
-import eu.invest.klk.neadearthobjects.data.db.DailyDao
 import eu.invest.klk.neadearthobjects.data.db.NeoDatabase
 import eu.invest.klk.neadearthobjects.data.network.*
 import eu.invest.klk.neadearthobjects.data.repository.NeoRepository

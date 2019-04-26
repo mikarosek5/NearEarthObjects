@@ -8,7 +8,9 @@ import eu.invest.klk.neadearthobjects.data.db.entity.daily.Daily
 import eu.invest.klk.neadearthobjects.data.db.DailyDao
 import eu.invest.klk.neadearthobjects.data.db.NeoCountDao
 import eu.invest.klk.neadearthobjects.data.db.NeoDao
+import eu.invest.klk.neadearthobjects.data.db.boundary_callback.NeoBoundaryCallback
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.count.NeoCount
+import eu.invest.klk.neadearthobjects.data.db.source_factory.NeoItemsDataSourceFactory
 import eu.invest.klk.neadearthobjects.data.network.NasaNetWorkDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -29,7 +31,7 @@ class NeoRepositoryImpl(
         nasaNetWorkDataSource.downloadedNeoCount.observeForever { newNeoCount ->
             persistFetchedNeoCount(newNeoCount)
         }
-        nasaNetWorkDataSource.downloadedNeoObjects.observeForever {newNeoObjects ->
+        nasaNetWorkDataSource.downloadedNeoObjects.observeForever { newNeoObjects ->
             persistFetchedNeoObjects(newNeoObjects.nearEarthObjects)
         }
     }
@@ -50,21 +52,28 @@ class NeoRepositoryImpl(
 
     override suspend fun getNeoObjectsList(page: Int, size: Int): LiveData<List<NearEarthObject>> {
         return withContext(Dispatchers.IO) {
-            initNeoObjects(page = page,size = size)
+            initNeoObjects(page = page, size = size)
             return@withContext neoDao.getAllNeoObjects()
         }
     }
 
     override suspend fun getNeoObjectsListPaged(page: Int, size: Int): LiveData<PagedList<NearEarthObject>> {
         return withContext(Dispatchers.IO) {
-            initNeoObjects(page = page,size = size)
+            //            initNeoObjects(page = page, size = size) Todo()
             val pagedListConfig = PagedList.Config.Builder()
                 .setEnablePlaceholders(false)
                 .setPageSize(10)
                 .setPrefetchDistance(10)
                 .setInitialLoadSizeHint(30)
                 .build()
-            return@withContext LivePagedListBuilder<Int,NearEarthObject>(neoDao.getAllNeoObjectsPaged(),pagedListConfig).build()
+            val dataSourceFactory = NeoItemsDataSourceFactory(nasaNetWorkDataSource)
+//            return@withContext LivePagedListBuilder(
+//                neoDao.getAllNeoObjectsPaged(),
+//                pagedListConfig
+//            ).setBoundaryCallback(NeoBoundaryCallback(nasaNetWorkDataSource,neoDao)).build()
+            return@withContext LivePagedListBuilder(
+                dataSourceFactory, pagedListConfig
+            ).setBoundaryCallback(NeoBoundaryCallback(nasaNetWorkDataSource, neoDao)).build()
         }
     }
 
@@ -79,7 +88,8 @@ class NeoRepositoryImpl(
             neoCountDao.upsert(fetchedNeoCount)
         }
     }
-    private fun persistFetchedNeoObjects(fetchedNeoObject: List<NearEarthObject>){
+
+    private fun persistFetchedNeoObjects(fetchedNeoObject: List<NearEarthObject>) {
         GlobalScope.launch(Dispatchers.IO) {
             neoDao.upsert(fetchedNeoObject)
         }
@@ -94,9 +104,10 @@ class NeoRepositoryImpl(
         if (isFetchNeded(ZonedDateTime.now().minusHours(4)))
             fetchNeoCount()
     }
-    private suspend fun initNeoObjects(page:Int,size:Int){
+
+    private suspend fun initNeoObjects(page: Int, size: Int) {
         if (isFetchNeded(ZonedDateTime.now().minusHours(4)))
-            fetchNeoObjects(page = page,size = size)
+            fetchNeoObjects(page = page, size = size)
     }
 
 
@@ -109,8 +120,8 @@ class NeoRepositoryImpl(
         nasaNetWorkDataSource.fetchNeoCount()
     }
 
-    private suspend fun fetchNeoObjects(page:Int,size:Int){
-        nasaNetWorkDataSource.fetchNeoObjects(page = page,size = size)
+    private suspend fun fetchNeoObjects(page: Int, size: Int) {
+        nasaNetWorkDataSource.fetchNeoObjects(page = page, size = size)
     }
 
     private fun isFetchNeded(lastFetchTime: ZonedDateTime): Boolean {
