@@ -10,5 +10,6 @@ interface NeoRepository {
     suspend fun getDailyInfo():LiveData<Daily>
     suspend fun getNeoCount():LiveData<NeoCount>
     suspend fun getNeoObjectsList(page:Int,size:Int):LiveData<List<NearEarthObject>>
-    suspend fun getNeoObjectsListPaged(page:Int,size:Int):LiveData<PagedList<NearEarthObject>>
+    suspend fun getNeoObjectsListPaged():LiveData<PagedList<NearEarthObject>>
+    fun invalidateNeoObjectsListPaged()
 }

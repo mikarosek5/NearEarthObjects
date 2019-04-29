@@ -3,6 +3,7 @@ package eu.invest.klk.neadearthobjects
 import android.app.Application
 import com.jakewharton.threetenabp.AndroidThreeTen
 import eu.invest.klk.neadearthobjects.data.db.NeoDatabase
+import eu.invest.klk.neadearthobjects.data.db.source_factory.NeoItemsDataSourceFactory
 import eu.invest.klk.neadearthobjects.data.network.*
 import eu.invest.klk.neadearthobjects.data.repository.NeoRepository
 import eu.invest.klk.neadearthobjects.data.repository.NeoRepositoryImpl
@@ -24,10 +25,11 @@ class NeoApplication : Application(), KodeinAware {
         bind() from singleton { instance<NeoDatabase>().dailyDao() }
         bind() from singleton { instance<NeoDatabase>().neoCountDao() }
         bind() from singleton { instance<NeoDatabase>().neoDao() }
-        bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { NasaService(instance()) }
+        bind() from singleton { NeoItemsDataSourceFactory(instance()) }
+        bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind<NasaNetWorkDataSource>() with singleton { NasaNetWorkDataSourceImpl(instance()) }
-        bind<NeoRepository>() with singleton { NeoRepositoryImpl(instance(),instance(),instance(),instance()) }
+        bind<NeoRepository>() with singleton { NeoRepositoryImpl(instance(),instance(),instance(),instance(),instance()) }
         bind() from provider { PictureOfDayViewModelFactory(instance()) }
         bind() from provider { NeoListViewModelFactory(instance()) }
     }

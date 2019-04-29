@@ -3,13 +3,12 @@ package eu.invest.klk.neadearthobjects.data.repository
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import eu.invest.klk.neadearthobjects.data.db.entity.neo.list.NearEarthObject
-import eu.invest.klk.neadearthobjects.data.db.entity.daily.Daily
 import eu.invest.klk.neadearthobjects.data.db.DailyDao
 import eu.invest.klk.neadearthobjects.data.db.NeoCountDao
 import eu.invest.klk.neadearthobjects.data.db.NeoDao
-import eu.invest.klk.neadearthobjects.data.db.boundary_callback.NeoBoundaryCallback
+import eu.invest.klk.neadearthobjects.data.db.entity.daily.Daily
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.count.NeoCount
+import eu.invest.klk.neadearthobjects.data.db.entity.neo.list.NearEarthObject
 import eu.invest.klk.neadearthobjects.data.db.source_factory.NeoItemsDataSourceFactory
 import eu.invest.klk.neadearthobjects.data.network.NasaNetWorkDataSource
 import kotlinx.coroutines.Dispatchers
@@ -18,12 +17,17 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.threeten.bp.ZonedDateTime
 
+private const val PAGE_SIZE = 10
+
 class NeoRepositoryImpl(
     private val dailyDao: DailyDao,
     private val neoCountDao: NeoCountDao,
     private val neoDao: NeoDao,
-    private val nasaNetWorkDataSource: NasaNetWorkDataSource
+    private val nasaNetWorkDataSource: NasaNetWorkDataSource,
+    private val dataSourceFactory: NeoItemsDataSourceFactory
 ) : NeoRepository {
+
+
     init {
         nasaNetWorkDataSource.downloadedDaily.observeForever { newDaily ->
             persistFetchedDaily(newDaily)
@@ -57,24 +61,24 @@ class NeoRepositoryImpl(
         }
     }
 
-    override suspend fun getNeoObjectsListPaged(page: Int, size: Int): LiveData<PagedList<NearEarthObject>> {
+    override suspend fun getNeoObjectsListPaged(): LiveData<PagedList<NearEarthObject>> {
         return withContext(Dispatchers.IO) {
-            //            initNeoObjects(page = page, size = size) Todo()
             val pagedListConfig = PagedList.Config.Builder()
                 .setEnablePlaceholders(false)
-                .setPageSize(10)
-                .setPrefetchDistance(10)
-                .setInitialLoadSizeHint(30)
+                .setPageSize(PAGE_SIZE)
+                .setPrefetchDistance(PAGE_SIZE)
+                .setInitialLoadSizeHint(PAGE_SIZE * 3)
                 .build()
-            val dataSourceFactory = NeoItemsDataSourceFactory(nasaNetWorkDataSource)
-//            return@withContext LivePagedListBuilder(
-//                neoDao.getAllNeoObjectsPaged(),
-//                pagedListConfig
-//            ).setBoundaryCallback(NeoBoundaryCallback(nasaNetWorkDataSource,neoDao)).build()
             return@withContext LivePagedListBuilder(
-                dataSourceFactory, pagedListConfig
-            ).setBoundaryCallback(NeoBoundaryCallback(nasaNetWorkDataSource, neoDao)).build()
+                dataSourceFactory,
+                pagedListConfig
+            ).build()
         }
+    }
+
+    override fun invalidateNeoObjectsListPaged() {
+        GlobalScope.launch(Dispatchers.IO) { dataSourceFactory.invalidateSource() }
+
     }
 
     private fun persistFetchedDaily(fetchedDaily: Daily) {

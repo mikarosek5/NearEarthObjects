@@ -13,11 +13,6 @@ class NeoBoundaryCallback(private val nasaNetworkDatasource: NasaNetWorkDataSour
     PagedList.BoundaryCallback<NearEarthObject>() {
     override fun onItemAtEndLoaded(itemAtEnd: NearEarthObject) {
         super.onItemAtEndLoaded(itemAtEnd)
-        GlobalScope.launch(Dispatchers.IO) {
-            Thread.sleep(100) //Todo
-            Log.d(this::class.java.simpleName, itemAtEnd.neoReferenceId) //Todo
-            TODO("Implement dataSource")
-        }
-
+        //Will implement network + database configuration to cache neo objects
     }
 }

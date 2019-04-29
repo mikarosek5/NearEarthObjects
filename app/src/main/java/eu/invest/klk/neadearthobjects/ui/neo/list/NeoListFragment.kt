@@ -1,23 +1,17 @@
 package eu.invest.klk.neadearthobjects.ui.neo.list
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.ViewHolder
 import eu.invest.klk.neadearthobjects.R
-import eu.invest.klk.neadearthobjects.data.db.entity.neo.list.NearEarthObject
 import eu.invest.klk.neadearthobjects.ui.base.ScopedFragment
-import eu.invest.klk.neadearthobjects.ui.helpers.EndlessScrollListener
+import eu.invest.klk.neadearthobjects.ui.neo.list.recycler.NeoListAdapter
 import kotlinx.android.synthetic.main.neo_list_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
@@ -30,6 +24,8 @@ class NeoListFragment : ScopedFragment(),KodeinAware {
 
     private val neoListViewModelFactory:NeoListViewModelFactory by instance()
 
+    private val neoPagedAdapter by lazy { NeoListAdapter() }
+
     private lateinit var viewModel: NeoListViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
@@ -41,37 +37,25 @@ class NeoListFragment : ScopedFragment(),KodeinAware {
         viewModel = ViewModelProviders.of(this,neoListViewModelFactory).get(NeoListViewModel::class.java)
         bindUi()
 
+
     }
 
     private fun bindUi() = launch {
         setUpToolbarText()
         setUpRecycler()
+        refresh()
     }
 
     private suspend fun setUpRecycler(){
-        val neoObjectList = viewModel.getAllNeos(203,20).value.await()
-        neoObjectList.observe(this@NeoListFragment, Observer {
+        viewModel.pagedAllNeos.value.await().observe(this@NeoListFragment, Observer {
             if (it==null)
                 return@Observer
-            Log.d("Objects",it.toString())
-
-            val groupAdaper = GroupAdapter<ViewHolder>().apply {
-                addAll(it.map { item-> NeoItem(item) })
-            }
-            recycler.apply {
-                layoutManager = LinearLayoutManager(this@NeoListFragment.context).also {layoutManager->
-                    addOnScrollListener(EndlessScrollListener(layoutManager,loadNewDataListener))
-                }
-                adapter = groupAdaper
-            }
-
+            group_loading.visibility = View.GONE
+            refresh.isRefreshing = false
+            neoPagedAdapter.submitList(it)
+            recycler.adapter = neoPagedAdapter
         })
     }
-    private val loadNewDataListener:()->Unit = {
-//        Toast.makeText(this.context,"Dziala",Toast.LENGTH_SHORT).show()
-        Log.d(this::class.java.simpleName,"koniec")
-    }
-
 
 
     private suspend fun setUpToolbarText(){
@@ -83,6 +67,15 @@ class NeoListFragment : ScopedFragment(),KodeinAware {
             (activity as? AppCompatActivity)?.supportActionBar?.subtitle = getString(R.string.near_object_count_closest,it.closeApproachCount)
 
         })
+    }
+    private fun refresh(){
+       refresh.apply {
+           setOnRefreshListener {
+               viewModel.refreshRecycler()
+           }
+       }
+
+
     }
 
 

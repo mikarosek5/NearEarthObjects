@@ -12,4 +12,9 @@ class NeoListViewModel(private val repository: NeoRepository) : ViewModel() {
     suspend fun getAllNeos(page:Int,size:Int=20):Lazy<Deferred<LiveData<List<NearEarthObject>>>>{
         return lazyDeferred { repository.getNeoObjectsList(page = page,size = size) }
     }
+    val pagedAllNeos = lazyDeferred { repository.getNeoObjectsListPaged() }
+
+    fun refreshRecycler(){
+        repository.invalidateNeoObjectsListPaged()
+    }
 }
