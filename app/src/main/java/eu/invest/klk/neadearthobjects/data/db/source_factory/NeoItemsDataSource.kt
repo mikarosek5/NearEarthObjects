@@ -1,13 +1,11 @@
 package eu.invest.klk.neadearthobjects.data.db.source_factory
 
 import androidx.paging.PageKeyedDataSource
-import com.example.try_modular.neoResponse.NeoResponse
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.list.NearEarthObject
-import eu.invest.klk.neadearthobjects.data.network.NasaNetWorkDataSource
+import eu.invest.klk.neadearthobjects.data.network.network_source.nasa.NasaNetWorkDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.newCoroutineContext
 
 class NeoItemsDataSource(private val nasaNetWorkDataSource: NasaNetWorkDataSource) :
     PageKeyedDataSource<Int, NearEarthObject>() {

@@ -3,7 +3,7 @@ package eu.invest.klk.neadearthobjects.data.db.source_factory
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.list.NearEarthObject
-import eu.invest.klk.neadearthobjects.data.network.NasaNetWorkDataSource
+import eu.invest.klk.neadearthobjects.data.network.network_source.nasa.NasaNetWorkDataSource
 
 class NeoItemsDataSourceFactory(private val nasaNetWorkDataSource: NasaNetWorkDataSource) :
     DataSource.Factory<Int, NearEarthObject>() {

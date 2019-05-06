@@ -3,19 +3,24 @@ package eu.invest.klk.neadearthobjects.data.repository
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import eu.invest.klk.neadearthobjects.data.db.DailyDao
-import eu.invest.klk.neadearthobjects.data.db.NeoCountDao
-import eu.invest.klk.neadearthobjects.data.db.NeoDao
+import eu.invest.klk.neadearthobjects.data.db.daos.nasa.DailyDao
+import eu.invest.klk.neadearthobjects.data.db.daos.nasa.NeoCountDao
+import eu.invest.klk.neadearthobjects.data.db.daos.nasa.NeoDao
+import eu.invest.klk.neadearthobjects.data.db.daos.spacex.LaunchDao
 import eu.invest.klk.neadearthobjects.data.db.entity.daily.Daily
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.count.NeoCount
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.list.NearEarthObject
+import eu.invest.klk.neadearthobjects.data.db.entity.spaceX.next.Launch
 import eu.invest.klk.neadearthobjects.data.db.source_factory.NeoItemsDataSourceFactory
-import eu.invest.klk.neadearthobjects.data.network.NasaNetWorkDataSource
+import eu.invest.klk.neadearthobjects.data.network.network_source.launch_library.LaunchLibraryNetworkSource
+import eu.invest.klk.neadearthobjects.data.network.network_source.nasa.NasaNetWorkDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.threeten.bp.ZonedDateTime
+import org.threeten.bp.format.DateTimeFormatter
+import java.util.*
 
 private const val PAGE_SIZE = 10
 
@@ -23,6 +28,8 @@ class NeoRepositoryImpl(
     private val dailyDao: DailyDao,
     private val neoCountDao: NeoCountDao,
     private val neoDao: NeoDao,
+    private val launchDao: LaunchDao,
+    private val launchLibraryNetworkSource: LaunchLibraryNetworkSource,
     private val nasaNetWorkDataSource: NasaNetWorkDataSource,
     private val dataSourceFactory: NeoItemsDataSourceFactory
 ) : NeoRepository {
@@ -37,6 +44,9 @@ class NeoRepositoryImpl(
         }
         nasaNetWorkDataSource.downloadedNeoObjects.observeForever { newNeoObjects ->
             persistFetchedNeoObjects(newNeoObjects.nearEarthObjects)
+        }
+        launchLibraryNetworkSource.downloadedFalconLaunches.observeForever { spacexLaunch->
+
         }
     }
 
@@ -76,6 +86,10 @@ class NeoRepositoryImpl(
         }
     }
 
+    override suspend fun getSpacexLaunches(): LiveData<Launch> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun invalidateNeoObjectsListPaged() {
         GlobalScope.launch(Dispatchers.IO) { dataSourceFactory.invalidateSource() }
 
@@ -112,6 +126,17 @@ class NeoRepositoryImpl(
     private suspend fun initNeoObjects(page: Int, size: Int) {
         if (isFetchNeded(ZonedDateTime.now().minusHours(4)))
             fetchNeoObjects(page = page, size = size)
+    }
+    private suspend fun initSpaceXLaunches(){
+        val oldLaunches = launchDao.getAllLaunches().value
+        if (oldLaunches==null){
+            launchLibraryNetworkSource.fetchFivePendingFalcons()
+            return
+        }
+        if (oldLaunches.any { isFetchNeded(it.fetchDate) }){
+            launchLibraryNetworkSource.fetchFivePendingFalcons()
+            return
+        }
     }
 
 

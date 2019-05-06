@@ -1,4 +1,4 @@
-package eu.invest.klk.neadearthobjects.data.network
+package eu.invest.klk.neadearthobjects.data.network.interceptors
 
 import okhttp3.Interceptor
 

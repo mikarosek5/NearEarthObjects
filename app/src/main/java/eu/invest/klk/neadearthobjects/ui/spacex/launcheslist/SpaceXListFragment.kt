@@ -1,19 +1,24 @@
 package eu.invest.klk.neadearthobjects.ui.spacex.launcheslist
 
-import androidx.lifecycle.ViewModelProviders
+
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.lifecycle.ViewModelProviders
 import eu.invest.klk.neadearthobjects.R
+import eu.invest.klk.neadearthobjects.data.network.interceptors.ConnectivityInterceptorImpl
+import eu.invest.klk.neadearthobjects.data.network.services.LaunchLibrary
+import eu.invest.klk.neadearthobjects.ui.base.ScopedFragment
+import kotlinx.coroutines.launch
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
+import java.util.*
 
-class SpaceXListFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = SpaceXListFragment()
-    }
+class SpaceXListFragment : ScopedFragment() {
+
 
     private lateinit var viewModel: SpaceXlistViewModel
 
@@ -27,7 +32,12 @@ class SpaceXListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SpaceXlistViewModel::class.java)
-        // TODO: Use the ViewModel
+        launch{
+            val a = LaunchLibrary(ConnectivityInterceptorImpl(this@SpaceXListFragment.context!!)).downloadNextLaunchesAsync(5,"falcon").await()
+            val outputFormat = DateTimeFormatter.ofPattern("MMMM d, yyyy HH:mm:ss", Locale.US)
+            val abc = LocalDateTime.parse(a.launches.last().date.dropLast(4),outputFormat)
+            Log.d(this@SpaceXListFragment::class.java.simpleName,abc.toLocalDate().plusDays(4).toString())
+        }
     }
 
 }

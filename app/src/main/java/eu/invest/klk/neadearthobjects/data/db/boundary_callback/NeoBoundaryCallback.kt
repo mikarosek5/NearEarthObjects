@@ -1,13 +1,9 @@
 package eu.invest.klk.neadearthobjects.data.db.boundary_callback
 
-import android.util.Log
 import androidx.paging.PagedList
-import eu.invest.klk.neadearthobjects.data.db.NeoDao
+import eu.invest.klk.neadearthobjects.data.db.daos.nasa.NeoDao
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.list.NearEarthObject
-import eu.invest.klk.neadearthobjects.data.network.NasaNetWorkDataSource
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import eu.invest.klk.neadearthobjects.data.network.network_source.nasa.NasaNetWorkDataSource
 
 class NeoBoundaryCallback(private val nasaNetworkDatasource: NasaNetWorkDataSource, private val neoDao: NeoDao) :
     PagedList.BoundaryCallback<NearEarthObject>() {

@@ -1,4 +1,4 @@
-package eu.invest.klk.neadearthobjects.data.db
+package eu.invest.klk.neadearthobjects.data.db.daos.nasa
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

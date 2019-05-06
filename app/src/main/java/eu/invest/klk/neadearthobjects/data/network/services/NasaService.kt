@@ -1,9 +1,10 @@
-package eu.invest.klk.neadearthobjects.data.network
+package eu.invest.klk.neadearthobjects.data.network.services
 
-import com.example.try_modular.neoResponse.NeoResponse
+import eu.invest.klk.neadearthobjects.data.network.response.NeoResponse
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import eu.invest.klk.neadearthobjects.data.db.entity.daily.Daily
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.count.NeoCount
+import eu.invest.klk.neadearthobjects.data.network.interceptors.ConnectivityInterceptor
 import kotlinx.coroutines.Deferred
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

@@ -1,15 +1,17 @@
-package eu.invest.klk.neadearthobjects.data.network
+package eu.invest.klk.neadearthobjects.data.network.network_source.nasa
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.try_modular.neoResponse.NeoResponse
+import eu.invest.klk.neadearthobjects.data.network.response.NeoResponse
 import eu.invest.klk.neadearthobjects.data.db.entity.daily.Daily
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.count.NeoCount
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.list.NearEarthObject
+import eu.invest.klk.neadearthobjects.data.network.services.NasaService
 import eu.invest.klk.neadearthobjects.internal.ConnectivityException
 
-class NasaNetWorkDataSourceImpl(private val nasaService: NasaService) : NasaNetWorkDataSource {
+class NasaNetWorkDataSourceImpl(private val nasaService: NasaService) :
+    NasaNetWorkDataSource {
     private val _downloadedDaily = MutableLiveData<Daily>()
     override val downloadedDaily: LiveData<Daily>
         get() = _downloadedDaily
