@@ -2,24 +2,23 @@ package eu.invest.klk.neadearthobjects.ui.spacex.launcheslist
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import eu.invest.klk.neadearthobjects.R
-import eu.invest.klk.neadearthobjects.data.network.interceptors.ConnectivityInterceptorImpl
-import eu.invest.klk.neadearthobjects.data.network.services.LaunchLibrary
 import eu.invest.klk.neadearthobjects.ui.base.ScopedFragment
+import kotlinx.android.synthetic.main.space_xlist_fragment.*
 import kotlinx.coroutines.launch
-import org.threeten.bp.LocalDateTime
-import org.threeten.bp.format.DateTimeFormatter
-import java.util.*
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.closestKodein
+import org.kodein.di.generic.instance
 
 
-class SpaceXListFragment : ScopedFragment() {
-
-
+class SpaceXListFragment : ScopedFragment(),KodeinAware {
+    override val kodein by closestKodein()
+    private val viewModelFactory:SpaceXlistViewModelFactory by instance()
     private lateinit var viewModel: SpaceXlistViewModel
 
     override fun onCreateView(
@@ -31,13 +30,16 @@ class SpaceXListFragment : ScopedFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(SpaceXlistViewModel::class.java)
-        launch{
-            val a = LaunchLibrary(ConnectivityInterceptorImpl(this@SpaceXListFragment.context!!)).downloadNextLaunchesAsync(5,"falcon").await()
-            val outputFormat = DateTimeFormatter.ofPattern("MMMM d, yyyy HH:mm:ss", Locale.US)
-            val abc = LocalDateTime.parse(a.launches.last().date.dropLast(4),outputFormat)
-            Log.d(this@SpaceXListFragment::class.java.simpleName,abc.toLocalDate().plusDays(4).toString())
-        }
+        viewModel = ViewModelProviders.of(this,viewModelFactory).get(SpaceXlistViewModel::class.java)
+        bindUi()
+    }
+
+    private fun bindUi()= launch {
+        viewModel.launches.await().observe(this@SpaceXListFragment, Observer {
+            if (it==null)
+                return@Observer
+            textView.text = it.toString()
+        })
     }
 
 }

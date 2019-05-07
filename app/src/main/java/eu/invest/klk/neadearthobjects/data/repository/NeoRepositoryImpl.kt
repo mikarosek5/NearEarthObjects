@@ -19,8 +19,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.threeten.bp.ZonedDateTime
-import org.threeten.bp.format.DateTimeFormatter
-import java.util.*
 
 private const val PAGE_SIZE = 10
 
@@ -45,8 +43,8 @@ class NeoRepositoryImpl(
         nasaNetWorkDataSource.downloadedNeoObjects.observeForever { newNeoObjects ->
             persistFetchedNeoObjects(newNeoObjects.nearEarthObjects)
         }
-        launchLibraryNetworkSource.downloadedFalconLaunches.observeForever { spacexLaunch->
-
+        launchLibraryNetworkSource.downloadedFalconLaunches.observeForever { spacexLaunch ->
+            persistFetchedLaunchList(spacexLaunch.launches)
         }
     }
 
@@ -86,8 +84,11 @@ class NeoRepositoryImpl(
         }
     }
 
-    override suspend fun getSpacexLaunches(): LiveData<Launch> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun getSpacexLaunches(): LiveData<List<Launch>> {
+        return withContext(Dispatchers.IO) {
+            initSpaceXLaunches()
+            return@withContext launchDao.getAllLaunches()
+        }
     }
 
     override fun invalidateNeoObjectsListPaged() {
@@ -113,6 +114,12 @@ class NeoRepositoryImpl(
         }
     }
 
+    private fun persistFetchedLaunchList(fetchedLaunches: List<Launch>) {
+        GlobalScope.launch(Dispatchers.IO) {
+            launchDao.upsert(fetchedLaunches)
+        }
+    }
+
     private suspend fun initDailyData() {
         if (isFetchNeded(ZonedDateTime.now().minusHours(4))) //Todo
             fetchDaily()
@@ -127,16 +134,14 @@ class NeoRepositoryImpl(
         if (isFetchNeded(ZonedDateTime.now().minusHours(4)))
             fetchNeoObjects(page = page, size = size)
     }
-    private suspend fun initSpaceXLaunches(){
+
+    private suspend fun initSpaceXLaunches() {
         val oldLaunches = launchDao.getAllLaunches().value
-        if (oldLaunches==null){
+        if (oldLaunches == null) {
             launchLibraryNetworkSource.fetchFivePendingFalcons()
             return
         }
-        if (oldLaunches.any { isFetchNeded(it.fetchDate) }){
-            launchLibraryNetworkSource.fetchFivePendingFalcons()
-            return
-        }
+        launchLibraryNetworkSource.fetchFivePendingFalcons()
     }
 
 

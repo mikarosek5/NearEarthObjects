@@ -11,7 +11,7 @@ import eu.invest.klk.neadearthobjects.data.db.entity.spaceX.next.Launch
 interface LaunchDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun upsert(launch: Launch)
+    fun upsert(launchList: List<Launch>)
 
     @Query("select * from spaceX_launches")
     fun getAllLaunches():LiveData<List<Launch>>
