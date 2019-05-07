@@ -12,5 +12,5 @@
               tools:layout="@layout/neo_list_fragment"/>
     <fragment android:id="@+id/spaceXListFragment"
               android:name="eu.invest.klk.neadearthobjects.ui.spacex.launcheslist.SpaceXListFragment"
-              android:label="space_xlist_fragment" tools:layout="@layout/space_xlist_fragment"/>
+              android:label="SpaceX" tools:layout="@layout/space_xlist_fragment"/>
 </navigation>

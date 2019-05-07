@@ -138,10 +138,10 @@ class NeoRepositoryImpl(
     private suspend fun initSpaceXLaunches() {
         val oldLaunches = launchDao.getAllLaunches().value
         if (oldLaunches == null) {
-            launchLibraryNetworkSource.fetchFivePendingFalcons()
+            launchLibraryNetworkSource.fetchTenPendingFalcons()
             return
         }
-        launchLibraryNetworkSource.fetchFivePendingFalcons()
+        launchLibraryNetworkSource.fetchTenPendingFalcons()
     }
 
 

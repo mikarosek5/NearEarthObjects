@@ -13,9 +13,9 @@ class LaunchLibraryNetworkSourceImpl(private val service:LaunchLibrary) : Launch
     override val downloadedFalconLaunches: LiveData<SpacexLaunchesResponse>
         get() = _downloadedFalconLaunches
 
-    override suspend fun fetchFivePendingFalcons() {
+    override suspend fun fetchTenPendingFalcons() {
        try {
-           val downloadedLaunches = service.downloadNextLaunchesAsync(5,"falcon").await()
+           val downloadedLaunches = service.downloadNextLaunchesAsync(10,"falcon").await()
            _downloadedFalconLaunches.postValue(downloadedLaunches)
        }catch (e:ConnectivityException){
            Log.e(this::class.java.simpleName,e.toString())

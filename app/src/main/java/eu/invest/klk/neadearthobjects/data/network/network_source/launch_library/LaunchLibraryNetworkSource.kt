@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import eu.invest.klk.neadearthobjects.data.network.response.SpacexLaunchesResponse
 
 interface LaunchLibraryNetworkSource {
-    suspend fun fetchFivePendingFalcons()
+    suspend fun fetchTenPendingFalcons()
     val downloadedFalconLaunches:LiveData<SpacexLaunchesResponse>
 
 }

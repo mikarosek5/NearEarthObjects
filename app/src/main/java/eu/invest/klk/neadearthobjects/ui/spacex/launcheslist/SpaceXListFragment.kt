@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import eu.invest.klk.neadearthobjects.R
 import eu.invest.klk.neadearthobjects.ui.base.ScopedFragment
+import eu.invest.klk.neadearthobjects.ui.spacex.launcheslist.recycler.LaunchAdapter
 import kotlinx.android.synthetic.main.space_xlist_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
@@ -20,6 +21,7 @@ class SpaceXListFragment : ScopedFragment(),KodeinAware {
     override val kodein by closestKodein()
     private val viewModelFactory:SpaceXlistViewModelFactory by instance()
     private lateinit var viewModel: SpaceXlistViewModel
+    private val adapter by lazy { LaunchAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +40,8 @@ class SpaceXListFragment : ScopedFragment(),KodeinAware {
         viewModel.launches.await().observe(this@SpaceXListFragment, Observer {
             if (it==null)
                 return@Observer
-            textView.text = it.toString()
+            adapter.submitList(it)
+            recycler.adapter = adapter
         })
     }
 
