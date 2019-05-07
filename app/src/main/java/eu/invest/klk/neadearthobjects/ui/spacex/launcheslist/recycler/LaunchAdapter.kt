@@ -22,7 +22,7 @@ class LaunchAdapter:ListAdapter<Launch,LaunchAdapter.LaunchViewHolder>(LaunchDif
 
     override fun onBindViewHolder(holder: LaunchViewHolder, position: Int) {
        getItem(position).apply {
-           holder.name.text = name
+           holder.name.text = name.replace("|","\n",true).replace("(","\n(",true)
            holder.date.text = date
        }
     }

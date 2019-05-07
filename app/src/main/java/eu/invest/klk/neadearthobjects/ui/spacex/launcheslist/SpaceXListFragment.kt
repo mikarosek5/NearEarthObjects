@@ -42,6 +42,7 @@ class SpaceXListFragment : ScopedFragment(),KodeinAware {
                 return@Observer
             adapter.submitList(it)
             recycler.adapter = adapter
+            group_loading.visibility = View.GONE
         })
     }
 
