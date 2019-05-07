@@ -9,9 +9,9 @@
     <application
             android:allowBackup="true"
             android:name=".NeoApplication"
-            android:icon="@drawable/ic_rocket"
+            android:icon="@mipmap/my_launcher"
             android:label="@string/app_name"
-            android:roundIcon="@drawable/ic_rocket"
+            android:roundIcon="@mipmap/my_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.MainActivity">
