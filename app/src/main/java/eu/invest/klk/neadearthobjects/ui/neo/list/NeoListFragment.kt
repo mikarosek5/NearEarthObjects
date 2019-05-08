@@ -1,8 +1,6 @@
 package eu.invest.klk.neadearthobjects.ui.neo.list
 
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,7 +67,7 @@ class NeoListFragment : ScopedFragment(),KodeinAware {
         })
     }
     private fun refresh(){
-       refresh.apply {
+       refresh?.apply {
            setOnRefreshListener {
                viewModel.refreshRecycler()
            }

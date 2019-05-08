@@ -121,17 +121,17 @@ class NeoRepositoryImpl(
     }
 
     private suspend fun initDailyData() {
-        if (isFetchNeded(ZonedDateTime.now().minusHours(4))) //Todo
+        if (isFetchNeeded(ZonedDateTime.now().minusHours(4))) //Todo
             fetchDaily()
     }
 
     private suspend fun initNeoCountData() {
-        if (isFetchNeded(ZonedDateTime.now().minusHours(4)))
+        if (isFetchNeeded(ZonedDateTime.now().minusHours(4)))
             fetchNeoCount()
     }
 
     private suspend fun initNeoObjects(page: Int, size: Int) {
-        if (isFetchNeded(ZonedDateTime.now().minusHours(4)))
+        if (isFetchNeeded(ZonedDateTime.now().minusHours(4)))
             fetchNeoObjects(page = page, size = size)
     }
 
@@ -158,7 +158,7 @@ class NeoRepositoryImpl(
         nasaNetWorkDataSource.fetchNeoObjects(page = page, size = size)
     }
 
-    private fun isFetchNeded(lastFetchTime: ZonedDateTime): Boolean {
+    private fun isFetchNeeded(lastFetchTime: ZonedDateTime): Boolean {
         val twoHoursAgo = ZonedDateTime.now().minusHours(2)
         return lastFetchTime.isBefore(twoHoursAgo)
     }
