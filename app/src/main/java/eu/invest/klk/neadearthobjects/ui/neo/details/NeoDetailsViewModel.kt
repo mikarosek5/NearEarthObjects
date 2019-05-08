@@ -1,7 +1,5 @@
 package eu.invest.klk.neadearthobjects.ui.neo.details
 
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModel
 
-class NeoDetailsViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
-}
+class NeoDetailsViewModel : ViewModel()

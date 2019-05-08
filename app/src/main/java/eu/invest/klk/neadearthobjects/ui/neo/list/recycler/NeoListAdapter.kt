@@ -15,7 +15,7 @@ import java.lang.ref.WeakReference
 class NeoListAdapter: PagedListAdapter<NearEarthObject, NeoListAdapter.NeoViewHolder>(NearEarthObjectDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NeoViewHolder {
-        val context = WeakReference<Context>(parent.context) //Todo Weak Reference try
+        val context = WeakReference<Context>(parent.context)
         val inflater = LayoutInflater.from(context.get())
         return NeoViewHolder(inflater.inflate(R.layout.item_neo, parent, false))
     }
@@ -26,7 +26,7 @@ class NeoListAdapter: PagedListAdapter<NearEarthObject, NeoListAdapter.NeoViewHo
          */
         getItem(position)?.apply {
             holder.apply {
-                orbitClass.text = orbitalData?.orbitClass?.orbitClassRange
+                orbitClass.text = orbitalData.orbitClass.orbitClassRange
                 asteroidName.text = name
                 neoId.text = neoReferenceId
                 absMagnitude.text = absoluteMagnitudeH.toString()
@@ -34,7 +34,6 @@ class NeoListAdapter: PagedListAdapter<NearEarthObject, NeoListAdapter.NeoViewHo
                 estimatedDiameterMin.text = estimatedDiameter.kilometers.estimatedDiameterMin.toString()
                 isPotentiallyHazardous.text = if (isPotentiallyHazardousAsteroid) "Yes" else "No"
 
-                //Todo add rest of the content
             }
         }
     }
@@ -47,8 +46,6 @@ class NeoListAdapter: PagedListAdapter<NearEarthObject, NeoListAdapter.NeoViewHo
         val estimatedDiameterMin:TextView = root.est_min
         val estimatedDiameterMax:TextView = root.est_max
         val isPotentiallyHazardous:TextView = root.is_dangerous
-
-        //Todo add rest of the content //platform type check
 
     }
 }

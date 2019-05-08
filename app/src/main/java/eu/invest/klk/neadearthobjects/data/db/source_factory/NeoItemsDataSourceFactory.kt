@@ -16,7 +16,7 @@ class NeoItemsDataSourceFactory(private val nasaNetWorkDataSource: NasaNetWorkDa
             return this
         }
     }
-    suspend fun invalidateSource(){
+    fun invalidateSource(){
         liveDataSource.value?.invalidate()
     }
 }

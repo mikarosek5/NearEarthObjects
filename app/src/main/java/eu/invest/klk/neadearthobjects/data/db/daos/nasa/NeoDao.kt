@@ -7,7 +7,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.list.NearEarthObject
-import eu.invest.klk.neadearthobjects.data.db.source_factory.NeoItemsDataSource
 
 @Dao
 interface NeoDao {

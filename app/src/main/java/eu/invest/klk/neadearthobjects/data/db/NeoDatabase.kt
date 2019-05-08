@@ -17,7 +17,7 @@ import eu.invest.klk.neadearthobjects.data.db.entity.spaceX.next.Launch
 @Database(
     entities = [Daily::class, NeoCount::class, NearEarthObject::class,Launch::class],
     version = 2,
-    exportSchema = false //TODO("check this warning later")
+    exportSchema = false
 )
 abstract class NeoDatabase:RoomDatabase() {
     abstract fun dailyDao(): DailyDao
