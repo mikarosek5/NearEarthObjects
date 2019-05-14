@@ -7,6 +7,7 @@
         tools:context=".ui.spacex.launcheslist.SpaceXListFragment">
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
+            android:layoutAnimation="@anim/layout_animation_fall_down"
             android:background="@android:color/black"
             app:stackFromEnd="true"
             app:reverseLayout="true"

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.load.DataSource
@@ -13,8 +14,10 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.google.android.material.snackbar.Snackbar
 import eu.invest.klk.neadearthobjects.R
 import eu.invest.klk.neadearthobjects.internal.GlideApp
+import eu.invest.klk.neadearthobjects.internal.Status
 import eu.invest.klk.neadearthobjects.ui.base.ScopedFragment
 import kotlinx.android.synthetic.main.picture_of_day_fragment.*
 import kotlinx.coroutines.launch
@@ -41,9 +44,17 @@ class PictureOfDayFragment : ScopedFragment(), KodeinAware {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(PictureOfDayViewModel::class.java)
         bindUi()
+        status()
     }
 
 
+    private fun status() = launch {
+        val status = viewModel.status.await() as LiveData<Status>
+        status.observe(this@PictureOfDayFragment, Observer {
+            if (it ==Status.ERROR)
+                Snackbar.make(this@PictureOfDayFragment.cardView,"Connection issue, connect device to internet then swipe to refresh",Snackbar.LENGTH_LONG).show()
+        })
+    }
 
     private fun bindUi() = launch {
         val daily = viewModel.daily.await()

@@ -3,6 +3,7 @@ package eu.invest.klk.neadearthobjects.data.repository
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.hadilq.liveevent.LiveEvent
 import eu.invest.klk.neadearthobjects.data.db.daos.nasa.DailyDao
 import eu.invest.klk.neadearthobjects.data.db.daos.nasa.NeoCountDao
 import eu.invest.klk.neadearthobjects.data.db.daos.nasa.NeoDao
@@ -14,6 +15,7 @@ import eu.invest.klk.neadearthobjects.data.db.entity.spaceX.next.Launch
 import eu.invest.klk.neadearthobjects.data.db.source_factory.NeoItemsDataSourceFactory
 import eu.invest.klk.neadearthobjects.data.network.network_source.launch_library.LaunchLibraryNetworkSource
 import eu.invest.klk.neadearthobjects.data.network.network_source.nasa.NasaNetWorkDataSource
+import eu.invest.klk.neadearthobjects.internal.Status
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -45,6 +47,18 @@ class NeoRepositoryImpl(
         }
         launchLibraryNetworkSource.downloadedFalconLaunches.observeForever { spacexLaunch ->
             persistFetchedLaunchList(spacexLaunch.launches)
+        }
+    }
+
+    override suspend fun getDownloadingStatus(): LiveEvent<Status> {
+        return withContext(Dispatchers.IO){
+            return@withContext nasaNetWorkDataSource.downloadingStatus
+        }
+    }
+
+    override suspend fun getDownloadingStatusSpaxeX(): LiveEvent<Status> {
+        return withContext(Dispatchers.IO){
+            return@withContext launchLibraryNetworkSource.downloadSpaceXStatus
         }
     }
 

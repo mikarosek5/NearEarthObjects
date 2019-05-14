@@ -33,7 +33,6 @@ class NeoListAdapter: PagedListAdapter<NearEarthObject, NeoListAdapter.NeoViewHo
                 estimatedDiameterMax.text = estimatedDiameter.kilometers.estimatedDiameterMax.toString()
                 estimatedDiameterMin.text = estimatedDiameter.kilometers.estimatedDiameterMin.toString()
                 isPotentiallyHazardous.text = if (isPotentiallyHazardousAsteroid) "Yes" else "No"
-
             }
         }
     }
