@@ -107,7 +107,15 @@ class NeoRepositoryImpl(
 
     override fun invalidateNeoObjectsListPaged() {
         GlobalScope.launch(Dispatchers.IO) { dataSourceFactory.invalidateSource() }
+    }
 
+    override suspend fun refreshDaily() {
+        fetchDaily()
+    }
+
+    override suspend fun refreshLaunches() {
+        launchLibraryNetworkSource.fetchTenPendingFalcons()
+        //Todo
     }
 
     private fun persistFetchedDaily(fetchedDaily: Daily) {

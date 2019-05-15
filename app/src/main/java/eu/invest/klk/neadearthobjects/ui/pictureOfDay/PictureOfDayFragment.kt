@@ -45,15 +45,31 @@ class PictureOfDayFragment : ScopedFragment(), KodeinAware {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(PictureOfDayViewModel::class.java)
         bindUi()
         status()
+        refresh()
     }
 
 
     private fun status() = launch {
         val status = viewModel.status.await() as LiveData<Status>
         status.observe(this@PictureOfDayFragment, Observer {
-            if (it ==Status.ERROR)
-                Snackbar.make(this@PictureOfDayFragment.cardView,"Connection issue, connect device to internet then swipe to refresh",Snackbar.LENGTH_LONG).show()
+            if (it == Status.ERROR) {
+                Snackbar.make(
+                    this@PictureOfDayFragment.cardView,
+                    "Connection issue, connect device to internet then swipe to refresh",
+                    Snackbar.LENGTH_LONG
+                ).show()
+                refresh?.isRefreshing = false
+                group_loading.visibility = View.GONE
+            }
         })
+    }
+
+    private fun refresh() {
+        refresh?.setOnRefreshListener {
+            launch {
+                viewModel.refresh()
+            }
+        }
     }
 
     private fun bindUi() = launch {
@@ -67,10 +83,11 @@ class PictureOfDayFragment : ScopedFragment(), KodeinAware {
             loadImage(it.url)
         })
     }
-    private fun loadImage (url:String){
+
+    private fun loadImage(url: String) {
         GlideApp.with(this@PictureOfDayFragment).load(url).apply {
             transition(DrawableTransitionOptions.withCrossFade())
-            listener(object :RequestListener<Drawable>{
+            listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
                     e: GlideException?,
                     model: Any?,
@@ -78,7 +95,8 @@ class PictureOfDayFragment : ScopedFragment(), KodeinAware {
                     isFirstResource: Boolean
                 ): Boolean {
                     group_loading.visibility = View.GONE
-                    cardView.animate().alpha(1f).duration=2
+                    refresh?.isRefreshing = false
+                    cardView.animate().alpha(1f).duration = 2
                     return false
                 }
 
@@ -90,7 +108,8 @@ class PictureOfDayFragment : ScopedFragment(), KodeinAware {
                     isFirstResource: Boolean
                 ): Boolean {
                     group_loading.visibility = View.GONE
-                    cardView.animate().alpha(1f).duration=2
+                    refresh?.isRefreshing = false
+                    cardView.animate().alpha(1f).duration = 2
                     return false
                 }
 

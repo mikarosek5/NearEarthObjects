@@ -67,9 +67,12 @@ class NasaNetWorkDataSourceImpl(private val nasaService: NasaService) :
 
     override suspend fun fetchNeoObjectForDataSource(page: Int, size: Int): List<NearEarthObject> {
         return try {
-            nasaService.getNeoObjectsAsync(page, size).await().nearEarthObjects
+            val neoObjects =  nasaService.getNeoObjectsAsync(page, size).await().nearEarthObjects
+            _downloadingStatus.postValue(Status.OK)
+             neoObjects
         } catch (e: ConnectivityException) {
-            emptyList()
+            _downloadingStatus.postValue(Status.ERROR)
+             emptyList()
         }
     }
 

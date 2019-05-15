@@ -9,8 +9,21 @@
               android:label="Today" tools:layout="@layout/picture_of_day_fragment"/>
     <fragment android:id="@+id/neoListFragment"
               android:name="eu.invest.klk.neadearthobjects.ui.neo.list.NeoListFragment"
-              tools:layout="@layout/neo_list_fragment"/>
+              tools:layout="@layout/neo_list_fragment">
+        <action android:id="@+id/action_neoListFragment_to_errorFragment" app:destination="@id/errorFragment"
+                app:exitAnim="@anim/nav_default_exit_anim" app:enterAnim="@anim/nav_default_enter_anim"
+                app:popEnterAnim="@anim/nav_default_enter_anim" app:popExitAnim="@anim/nav_default_exit_anim"
+                app:popUpTo="@+id/pictureOfDayFragment"/>
+    </fragment>
     <fragment android:id="@+id/spaceXListFragment"
               android:name="eu.invest.klk.neadearthobjects.ui.spacex.launcheslist.SpaceXListFragment"
               android:label="SpaceX" tools:layout="@layout/space_xlist_fragment"/>
+    <fragment android:id="@+id/errorFragment"
+              android:name="eu.invest.klk.neadearthobjects.ui.error_fragment.ErrorFragment"
+              android:label="Oooops">
+        <action android:id="@+id/action_errorFragment_to_pictureOfDayFragment"
+                app:destination="@id/pictureOfDayFragment" app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim" app:popEnterAnim="@anim/nav_default_enter_anim"
+                app:popExitAnim="@anim/nav_default_exit_anim"/>
+    </fragment>
 </navigation>

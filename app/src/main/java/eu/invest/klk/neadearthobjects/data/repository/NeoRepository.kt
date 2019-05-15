@@ -17,5 +17,7 @@ interface NeoRepository {
     suspend fun getSpacexLaunches():LiveData<List<Launch>>
     suspend fun getDownloadingStatus():LiveEvent<Status>
     suspend fun getDownloadingStatusSpaxeX():LiveEvent<Status>
+    suspend fun refreshDaily()
+    suspend fun refreshLaunches()
     fun invalidateNeoObjectsListPaged()
 }

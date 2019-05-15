@@ -38,17 +38,20 @@ class SpaceXListFragment : ScopedFragment(), KodeinAware {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(SpaceXlistViewModel::class.java)
         bindUi()
         status()
+        refresh()
     }
 
     private fun status() = launch {
         val status = viewModel.status.await() as LiveData<Status>
         status.observe(this@SpaceXListFragment, Observer {
-            if (it == Status.ERROR)
+            if (it == Status.ERROR) {
                 Snackbar.make(
                     this@SpaceXListFragment.recycler,
                     "Connection issue, connect device to internet then swipe to refresh",
                     Snackbar.LENGTH_LONG
                 ).show()
+                refresh?.isRefreshing = false
+            }
 
         })
     }
@@ -60,7 +63,14 @@ class SpaceXListFragment : ScopedFragment(), KodeinAware {
             adapter.submitList(it)
             recycler.adapter = adapter
             group_loading.visibility = View.GONE
+            refresh?.isRefreshing = false
         })
+    }
+
+    private fun refresh() {
+        refresh?.setOnRefreshListener {
+            launch { viewModel.refresh() }
+        }
     }
 
 }

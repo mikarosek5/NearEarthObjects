@@ -5,15 +5,20 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent" android:layout_height="match_parent"
         tools:context=".ui.spacex.launcheslist.SpaceXListFragment">
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
-            android:layoutAnimation="@anim/layout_animation_fall_down"
-            android:background="@android:color/black"
-            app:stackFromEnd="true"
-            app:reverseLayout="true"
-            android:id="@+id/recycler"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:layout_height="match_parent"/>
+            android:id="@+id/refresh"
+            android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layoutAnimation="@anim/layout_animation_fall_down"
+                android:background="@android:color/black"
+                app:stackFromEnd="true"
+                app:reverseLayout="true"
+                android:id="@+id/recycler"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_height="match_parent"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <androidx.constraintlayout.widget.Group
             app:constraint_referenced_ids="progressBar,loading"
             android:id="@+id/group_loading"

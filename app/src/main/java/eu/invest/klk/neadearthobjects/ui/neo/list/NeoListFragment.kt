@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import eu.invest.klk.neadearthobjects.R
+import eu.invest.klk.neadearthobjects.internal.Status
 import eu.invest.klk.neadearthobjects.ui.base.ScopedFragment
 import eu.invest.klk.neadearthobjects.ui.neo.list.recycler.NeoListAdapter
 import kotlinx.android.synthetic.main.neo_list_fragment.*
@@ -39,9 +42,18 @@ class NeoListFragment : ScopedFragment(), KodeinAware {
     }
 
     private fun bindUi() = launch {
+        status()
         setUpToolbarText()
         setUpRecycler()
         refresh()
+    }
+    private suspend fun status(){
+        val status = viewModel.status.await() as LiveData<Status>
+        status.observe(this, Observer {
+            if (it==Status.ERROR)
+                Navigation.findNavController(recycler).navigate(NeoListFragmentDirections.actionNeoListFragmentToErrorFragment())
+                (activity as? AppCompatActivity)?.supportActionBar?.subtitle = null
+        })
     }
 
     private suspend fun setUpRecycler() {

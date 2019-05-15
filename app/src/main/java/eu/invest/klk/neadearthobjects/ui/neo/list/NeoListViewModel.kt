@@ -7,6 +7,7 @@ import eu.invest.klk.neadearthobjects.internal.lazyDeferred
 class NeoListViewModel(private val repository: NeoRepository) : ViewModel() {
     val neoCount by lazyDeferred { repository.getNeoCount() }
     val pagedAllNeos = lazyDeferred { repository.getNeoObjectsListPaged() }
+    val status by lazyDeferred { repository.getDownloadingStatus() }
     fun refreshRecycler(){
         repository.invalidateNeoObjectsListPaged()
     }
