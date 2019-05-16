@@ -70,7 +70,7 @@ class NasaNetWorkDataSourceImpl(private val nasaService: NasaService) :
             val neoObjects =  nasaService.getNeoObjectsAsync(page, size).await().nearEarthObjects
             _downloadingStatus.postValue(Status.OK)
              neoObjects
-        } catch (e: ConnectivityException) {
+        } catch (e: Exception) { //SocketTimeoutException
             _downloadingStatus.postValue(Status.ERROR)
              emptyList()
         }

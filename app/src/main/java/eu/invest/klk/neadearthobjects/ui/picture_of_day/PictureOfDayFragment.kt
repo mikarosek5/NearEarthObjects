@@ -88,7 +88,7 @@ class PictureOfDayFragment : ScopedFragment(), KodeinAware {
     }
 
     private fun imageNavigation() {
-        imageView.setOnClickListener {
+        imageView?.setOnClickListener {
             Navigation.findNavController(it)
                 .navigate(PictureOfDayFragmentDirections.actionPictureOfDayFragmentToBigPictureFragment())
             activity?.toolbar?.visibility = View.GONE
