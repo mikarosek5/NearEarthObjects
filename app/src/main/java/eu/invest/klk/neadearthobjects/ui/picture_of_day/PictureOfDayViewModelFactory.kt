@@ -1,4 +1,4 @@
-package eu.invest.klk.neadearthobjects.ui.pictureOfDay
+package eu.invest.klk.neadearthobjects.ui.picture_of_day
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

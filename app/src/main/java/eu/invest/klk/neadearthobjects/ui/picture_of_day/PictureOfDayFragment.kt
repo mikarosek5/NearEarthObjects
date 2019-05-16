@@ -1,4 +1,4 @@
-package eu.invest.klk.neadearthobjects.ui.pictureOfDay
+package eu.invest.klk.neadearthobjects.ui.picture_of_day
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -19,6 +20,7 @@ import eu.invest.klk.neadearthobjects.R
 import eu.invest.klk.neadearthobjects.internal.GlideApp
 import eu.invest.klk.neadearthobjects.internal.Status
 import eu.invest.klk.neadearthobjects.ui.base.ScopedFragment
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.picture_of_day_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
@@ -74,6 +76,7 @@ class PictureOfDayFragment : ScopedFragment(), KodeinAware {
 
     private fun bindUi() = launch {
         val daily = viewModel.daily.await()
+        imageNavigation()
         daily.observe(this@PictureOfDayFragment, Observer {
             if (it == null)
                 return@Observer
@@ -82,6 +85,15 @@ class PictureOfDayFragment : ScopedFragment(), KodeinAware {
             description.text = it.explanation
             loadImage(it.url)
         })
+    }
+
+    private fun imageNavigation() {
+        imageView.setOnClickListener {
+            Navigation.findNavController(it)
+                .navigate(PictureOfDayFragmentDirections.actionPictureOfDayFragmentToBigPictureFragment())
+            activity?.toolbar?.visibility = View.GONE
+            activity?.bottom_nav?.visibility = View.GONE
+        }
     }
 
     private fun loadImage(url: String) {

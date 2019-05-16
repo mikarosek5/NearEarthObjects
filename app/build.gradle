@@ -103,5 +103,8 @@ dependencies {
     //Live Event
     implementation "com.github.hadilq.liveevent:liveevent:1.0.1"
 
+    //PhotoView lib
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
 
 }

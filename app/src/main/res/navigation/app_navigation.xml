@@ -5,8 +5,13 @@
             app:startDestination="@id/pictureOfDayFragment">
 
     <fragment android:id="@+id/pictureOfDayFragment"
-              android:name="eu.invest.klk.neadearthobjects.ui.pictureOfDay.PictureOfDayFragment"
-              android:label="Today" tools:layout="@layout/picture_of_day_fragment"/>
+              android:name="eu.invest.klk.neadearthobjects.ui.picture_of_day.PictureOfDayFragment"
+              android:label="Today" tools:layout="@layout/picture_of_day_fragment">
+        <action android:id="@+id/action_pictureOfDayFragment_to_bigPictureFragment"
+                app:destination="@id/bigPictureFragment" app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim" app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
     <fragment android:id="@+id/neoListFragment"
               android:name="eu.invest.klk.neadearthobjects.ui.neo.list.NeoListFragment"
               tools:layout="@layout/neo_list_fragment">
@@ -26,4 +31,7 @@
                 app:exitAnim="@anim/nav_default_exit_anim" app:popEnterAnim="@anim/nav_default_enter_anim"
                 app:popExitAnim="@anim/nav_default_exit_anim"/>
     </fragment>
+    <fragment android:id="@+id/bigPictureFragment"
+              android:name="eu.invest.klk.neadearthobjects.ui.picture_of_day.big_picture.BigPictureFragment"
+              android:label="big_picture_fragment" tools:layout="@layout/big_picture_fragment"/>
 </navigation>

@@ -15,8 +15,8 @@
                     android:layout_height="wrap_content">
 
                 <ImageView
-                        android:layout_width="464dp"
-                        android:layout_height="297dp" tools:src="@tools:sample/avatars"
+                        android:layout_width="417dp"
+                        android:layout_height="267dp" tools:src="@tools:sample/avatars"
                         android:id="@+id/imageView" app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginStart="8dp" android:layout_marginTop="8dp"

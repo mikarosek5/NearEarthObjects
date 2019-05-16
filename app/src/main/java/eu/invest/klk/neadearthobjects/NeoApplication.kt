@@ -15,7 +15,7 @@ import eu.invest.klk.neadearthobjects.data.network.services.NasaService
 import eu.invest.klk.neadearthobjects.data.repository.NeoRepository
 import eu.invest.klk.neadearthobjects.data.repository.NeoRepositoryImpl
 import eu.invest.klk.neadearthobjects.ui.neo.list.NeoListViewModelFactory
-import eu.invest.klk.neadearthobjects.ui.pictureOfDay.PictureOfDayViewModelFactory
+import eu.invest.klk.neadearthobjects.ui.picture_of_day.PictureOfDayViewModelFactory
 import eu.invest.klk.neadearthobjects.ui.spacex.launcheslist.SpaceXlistViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
