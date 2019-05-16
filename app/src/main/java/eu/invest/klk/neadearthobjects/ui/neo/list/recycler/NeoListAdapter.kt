@@ -26,7 +26,6 @@ class NeoListAdapter: PagedListAdapter<NearEarthObject, NeoListAdapter.NeoViewHo
          */
         getItem(position)?.apply {
             holder.apply {
-                orbitClass.text = orbitalData.orbitClass.orbitClassRange
                 asteroidName.text = name
                 neoId.text = neoReferenceId
                 absMagnitude.text = absoluteMagnitudeH.toString()
@@ -38,7 +37,6 @@ class NeoListAdapter: PagedListAdapter<NearEarthObject, NeoListAdapter.NeoViewHo
     }
 
     class NeoViewHolder(root: View) : RecyclerView.ViewHolder(root) {
-        val orbitClass:TextView = root.orbit_class
         val asteroidName:TextView = root.asteroid_name
         val neoId:TextView = root.neo_id
         val absMagnitude:TextView = root.abs_magnitude

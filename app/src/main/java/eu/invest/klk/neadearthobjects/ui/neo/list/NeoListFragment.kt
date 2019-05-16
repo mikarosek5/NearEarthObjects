@@ -47,12 +47,15 @@ class NeoListFragment : ScopedFragment(), KodeinAware {
         setUpRecycler()
         refresh()
     }
-    private suspend fun status(){
+
+    private suspend fun status() {
         val status = viewModel.status.await() as LiveData<Status>
         status.observe(this, Observer {
-            if (it==Status.ERROR)
-                Navigation.findNavController(recycler).navigate(NeoListFragmentDirections.actionNeoListFragmentToErrorFragment())
+            if (it == Status.ERROR) {
+                Navigation.findNavController(recycler)
+                    .navigate(NeoListFragmentDirections.actionNeoListFragmentToErrorFragment())
                 (activity as? AppCompatActivity)?.supportActionBar?.subtitle = null
+            }
         })
     }
 
