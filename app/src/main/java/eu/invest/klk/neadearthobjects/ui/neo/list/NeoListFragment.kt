@@ -63,10 +63,10 @@ class NeoListFragment : ScopedFragment(), KodeinAware {
         viewModel.pagedAllNeos.value.await().observe(this@NeoListFragment, Observer {
             if (it == null)
                 return@Observer
-            group_loading.visibility = View.GONE
-            refresh.isRefreshing = false
             neoPagedAdapter.submitList(it)
             recycler.adapter = neoPagedAdapter
+            group_loading.visibility = View.GONE
+            refresh.isRefreshing = false
         })
     }
 
