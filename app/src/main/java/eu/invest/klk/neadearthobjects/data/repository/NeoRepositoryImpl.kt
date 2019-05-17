@@ -11,7 +11,7 @@ import eu.invest.klk.neadearthobjects.data.db.daos.spacex.LaunchDao
 import eu.invest.klk.neadearthobjects.data.db.entity.daily.Daily
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.count.NeoCount
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.list.NearEarthObject
-import eu.invest.klk.neadearthobjects.data.db.entity.spaceX.next.Launch
+import eu.invest.klk.neadearthobjects.data.db.entity.spaceX.list.Launch
 import eu.invest.klk.neadearthobjects.data.db.source_factory.NeoItemsDataSourceFactory
 import eu.invest.klk.neadearthobjects.data.network.network_source.launch_library.LaunchLibraryNetworkSource
 import eu.invest.klk.neadearthobjects.data.network.network_source.nasa.NasaNetWorkDataSource

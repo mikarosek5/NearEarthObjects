@@ -6,7 +6,7 @@ import com.hadilq.liveevent.LiveEvent
 import eu.invest.klk.neadearthobjects.data.db.entity.daily.Daily
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.count.NeoCount
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.list.NearEarthObject
-import eu.invest.klk.neadearthobjects.data.db.entity.spaceX.next.Launch
+import eu.invest.klk.neadearthobjects.data.db.entity.spaceX.list.Launch
 import eu.invest.klk.neadearthobjects.internal.Status
 
 interface NeoRepository {

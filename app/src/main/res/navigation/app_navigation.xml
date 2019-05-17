@@ -22,7 +22,11 @@
     </fragment>
     <fragment android:id="@+id/spaceXListFragment"
               android:name="eu.invest.klk.neadearthobjects.ui.spacex.launcheslist.SpaceXListFragment"
-              android:label="SpaceX" tools:layout="@layout/space_xlist_fragment"/>
+              android:label="SpaceX" tools:layout="@layout/space_xlist_fragment">
+        <action android:id="@+id/action_spaceXListFragment_to_spaceXDetails" app:destination="@id/spaceXDetails"
+                app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim" app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
     <fragment android:id="@+id/errorFragment"
               android:name="eu.invest.klk.neadearthobjects.ui.error_fragment.ErrorFragment"
               android:label="Oooops">
@@ -34,4 +38,9 @@
     <fragment android:id="@+id/bigPictureFragment"
               android:name="eu.invest.klk.neadearthobjects.ui.picture_of_day.big_picture.BigPictureFragment"
               android:label="big_picture_fragment" tools:layout="@layout/big_picture_fragment"/>
+    <fragment android:id="@+id/spaceXDetails"
+              android:name="eu.invest.klk.neadearthobjects.ui.spacex.next_launch.SpaceXDetails"
+              android:label="space_xdetails_fragment" tools:layout="@layout/space_xdetails_fragment">
+        <argument android:name="launch_id" app:argType="integer"/>
+    </fragment>
 </navigation>

@@ -10,7 +10,7 @@ import eu.invest.klk.neadearthobjects.data.db.daos.nasa.NeoCountDao
 import eu.invest.klk.neadearthobjects.data.db.daos.spacex.LaunchDao
 import eu.invest.klk.neadearthobjects.data.db.entity.daily.Daily
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.count.NeoCount
-import eu.invest.klk.neadearthobjects.data.db.entity.spaceX.next.Launch
+import eu.invest.klk.neadearthobjects.data.db.entity.spaceX.list.Launch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.After
