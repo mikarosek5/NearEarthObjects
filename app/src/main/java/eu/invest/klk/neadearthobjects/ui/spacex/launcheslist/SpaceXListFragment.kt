@@ -58,7 +58,7 @@ class SpaceXListFragment : ScopedFragment(), KodeinAware {
 
     private fun bindUi() = launch {
         viewModel.launches.await().observe(this@SpaceXListFragment, Observer {
-            if (it == null)
+            if (it == null||it.isEmpty())
                 return@Observer
             adapter.submitList(it)
             recycler.adapter = adapter

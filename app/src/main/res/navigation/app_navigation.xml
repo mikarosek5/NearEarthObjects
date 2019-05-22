@@ -42,5 +42,9 @@
               android:name="eu.invest.klk.neadearthobjects.ui.spacex.next_launch.SpaceXDetails"
               android:label="space_xdetails_fragment" tools:layout="@layout/space_xdetails_fragment">
         <argument android:name="launch_id" app:argType="integer"/>
+        <action android:id="@+id/action_spaceXDetails_to_errorFragment" app:destination="@id/errorFragment"
+                app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim" app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                app:popUpTo="@+id/pictureOfDayFragment"/>
     </fragment>
 </navigation>

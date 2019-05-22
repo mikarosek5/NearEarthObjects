@@ -23,6 +23,7 @@ import org.kodein.di.generic.instance
 class NeoListFragment : ScopedFragment(), KodeinAware {
     override val kodein: Kodein by closestKodein()
 
+
     private val neoListViewModelFactory: NeoListViewModelFactory by instance()
 
     private val neoPagedAdapter by lazy { NeoListAdapter() }
@@ -60,7 +61,7 @@ class NeoListFragment : ScopedFragment(), KodeinAware {
     }
 
     private suspend fun setUpRecycler() {
-        viewModel.pagedAllNeos.value.await().observe(this@NeoListFragment, Observer {
+        viewModel.pagedAllNeos.await().observe(this@NeoListFragment, Observer {
             if (it == null)
                 return@Observer
             neoPagedAdapter.submitList(it)

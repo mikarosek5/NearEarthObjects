@@ -1,5 +1,6 @@
 package eu.invest.klk.neadearthobjects.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -11,6 +12,7 @@ import eu.invest.klk.neadearthobjects.data.db.daos.spacex.LaunchDao
 import eu.invest.klk.neadearthobjects.data.db.entity.daily.Daily
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.count.NeoCount
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.list.NearEarthObject
+import eu.invest.klk.neadearthobjects.data.db.entity.spaceX.details.Launche
 import eu.invest.klk.neadearthobjects.data.db.entity.spaceX.list.Launch
 import eu.invest.klk.neadearthobjects.data.db.source_factory.NeoItemsDataSourceFactory
 import eu.invest.klk.neadearthobjects.data.network.network_source.launch_library.LaunchLibraryNetworkSource
@@ -58,6 +60,7 @@ class NeoRepositoryImpl(
 
     override suspend fun getDownloadingStatusSpaxeX(): LiveEvent<Status> {
         return withContext(Dispatchers.IO){
+            Log.d("AA","aa")
             return@withContext launchLibraryNetworkSource.downloadSpaceXStatus
         }
     }
@@ -102,6 +105,13 @@ class NeoRepositoryImpl(
         return withContext(Dispatchers.IO) {
             initSpaceXLaunches()
             return@withContext launchDao.getAllLaunches()
+        }
+    }
+
+    override suspend fun getLaunchDetails(id: Int): LiveData<Launche> {
+        return withContext(Dispatchers.IO){
+            launchLibraryNetworkSource.fetchLaunchDetalis(id)
+            return@withContext launchLibraryNetworkSource.downloadedDetails
         }
     }
 

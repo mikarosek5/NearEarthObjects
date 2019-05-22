@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.hadilq.liveevent.LiveEvent
+import eu.invest.klk.neadearthobjects.data.db.entity.spaceX.details.Launche
 import eu.invest.klk.neadearthobjects.data.network.response.SpacexLaunchesResponse
 import eu.invest.klk.neadearthobjects.data.network.services.LaunchLibrary
 import eu.invest.klk.neadearthobjects.internal.ConnectivityException
@@ -14,11 +15,15 @@ class LaunchLibraryNetworkSourceImpl(private val service:LaunchLibrary) : Launch
 
     private var _downloadSpaceXStatus = LiveEvent<Status>()
     private val _downloadedFalconLaunches = MutableLiveData<SpacexLaunchesResponse>()
+    private val _downloadedDetails = MutableLiveData<Launche>()
     override val downloadedFalconLaunches: LiveData<SpacexLaunchesResponse>
         get() = _downloadedFalconLaunches
 
     override val downloadSpaceXStatus: LiveEvent<Status>
         get() = _downloadSpaceXStatus
+
+    override val downloadedDetails: LiveData<Launche>
+        get() = _downloadedDetails
 
     override suspend fun fetchTenPendingFalcons() {
        try {
@@ -31,5 +36,13 @@ class LaunchLibraryNetworkSourceImpl(private val service:LaunchLibrary) : Launch
        }
     }
 
-
+    override suspend fun fetchLaunchDetalis(id: Int) {
+        try {
+            val downloadedDetails = service.downloadDetailsAsync(id).await()
+            _downloadedDetails.postValue(downloadedDetails.launches.first())
+            _downloadSpaceXStatus.postValue(Status.OK)
+        }catch (e:ConnectivityException){
+            _downloadSpaceXStatus.postValue(Status.ERROR)
+        }
+    }
 }

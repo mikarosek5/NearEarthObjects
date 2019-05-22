@@ -17,6 +17,7 @@ import eu.invest.klk.neadearthobjects.data.repository.NeoRepositoryImpl
 import eu.invest.klk.neadearthobjects.ui.neo.list.NeoListViewModelFactory
 import eu.invest.klk.neadearthobjects.ui.picture_of_day.PictureOfDayViewModelFactory
 import eu.invest.klk.neadearthobjects.ui.spacex.launcheslist.SpaceXlistViewModelFactory
+import eu.invest.klk.neadearthobjects.ui.spacex.next_launch.SpaceXdetailsViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -62,6 +63,7 @@ class NeoApplication : Application(), KodeinAware {
         bind() from provider { PictureOfDayViewModelFactory(instance()) }
         bind() from provider { NeoListViewModelFactory(instance()) }
         bind() from provider { SpaceXlistViewModelFactory(instance()) }
+        bind() from provider { SpaceXdetailsViewModelFactory(instance()) }
     }
 
     override fun onCreate() {

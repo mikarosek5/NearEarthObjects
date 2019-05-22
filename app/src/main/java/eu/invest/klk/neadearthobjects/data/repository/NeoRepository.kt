@@ -6,6 +6,7 @@ import com.hadilq.liveevent.LiveEvent
 import eu.invest.klk.neadearthobjects.data.db.entity.daily.Daily
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.count.NeoCount
 import eu.invest.klk.neadearthobjects.data.db.entity.neo.list.NearEarthObject
+import eu.invest.klk.neadearthobjects.data.db.entity.spaceX.details.Launche
 import eu.invest.klk.neadearthobjects.data.db.entity.spaceX.list.Launch
 import eu.invest.klk.neadearthobjects.internal.Status
 
@@ -15,6 +16,7 @@ interface NeoRepository {
     suspend fun getNeoObjectsList(page:Int,size:Int):LiveData<List<NearEarthObject>>
     suspend fun getNeoObjectsListPaged():LiveData<PagedList<NearEarthObject>>
     suspend fun getSpacexLaunches():LiveData<List<Launch>>
+    suspend fun getLaunchDetails(id:Int):LiveData<Launche>
     suspend fun getDownloadingStatus():LiveEvent<Status>
     suspend fun getDownloadingStatusSpaxeX():LiveEvent<Status>
     suspend fun refreshDaily()
