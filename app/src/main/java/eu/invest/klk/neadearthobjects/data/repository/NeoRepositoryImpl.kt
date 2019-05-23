@@ -125,7 +125,6 @@ class NeoRepositoryImpl(
 
     override suspend fun refreshLaunches() {
         launchLibraryNetworkSource.fetchTenPendingFalcons()
-        //Todo
     }
 
     private fun persistFetchedDaily(fetchedDaily: Daily) {
@@ -153,7 +152,7 @@ class NeoRepositoryImpl(
     }
 
     private suspend fun initDailyData() {
-        if (isFetchNeeded(ZonedDateTime.now().minusHours(4))) //Todo
+//        if (isFetchNeeded(ZonedDateTime.now().minusHours(4))) //
             fetchDaily()
     }
 

@@ -102,7 +102,7 @@ class DatabaseTests {
 
         launchDao.upsert(launches)
 
-        var lauchDb= ArrayList<Launch>()
+        val lauchDb= ArrayList<Launch>()
 
         val queryLaunch = launchDao.getAllLaunches()
 
